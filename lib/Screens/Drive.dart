@@ -32,7 +32,7 @@ class _CorridaState extends State<Corrida> {
   String _statusRequest = StatusRequest.WAITING;
 
   //Controles para exibição na tela
-  String _textoBotao = "Aceitar corrida";
+  String _textoBotao = "Aceitar travel";
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
   String _mensagemStatus = "";
@@ -180,7 +180,7 @@ class _CorridaState extends State<Corrida> {
   }
 
   _statusAguardando() {
-    _alterarBotaoPrincipal("Aceitar corrida", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Aceitar travel", Color(0xff1ebbd8), () {
       _aceitarCorrida();
     });
 
@@ -205,7 +205,7 @@ class _CorridaState extends State<Corrida> {
 
   _statusACaminho() {
     _mensagemStatus = "A caminho do passenger";
-    _alterarBotaoPrincipal("Iniciar corrida", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Iniciar travel", Color(0xff1ebbd8), () {
       _iniciarCorrida();
     });
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];
@@ -248,7 +248,7 @@ class _CorridaState extends State<Corrida> {
   }
 
   _statusFinalizada() async {
-    //Calcula valor da corrida
+    //Calcula valor da travel
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
     double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
@@ -308,7 +308,7 @@ class _CorridaState extends State<Corrida> {
 
   _statusEmViagem() {
     _mensagemStatus = "Em travel";
-    _alterarBotaoPrincipal("Finalizar corrida", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Finalizar travel", Color(0xff1ebbd8), () {
       _finalizarCorrida();
     });
 
@@ -467,8 +467,8 @@ class _CorridaState extends State<Corrida> {
     return Scaffold(
       appBar: AppBar(
         title: _mensagemStatus == ""
-            ? Text("Panel corrida")
-            : Text("Panel corrida - " + _mensagemStatus),
+            ? Text("Panel travel")
+            : Text("Panel travel - " + _mensagemStatus),
       ),
       body: Container(
         child: Stack(

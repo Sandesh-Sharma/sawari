@@ -18,7 +18,7 @@ class Rotas {
         return MaterialPageRoute(builder: (_) => PanelDriver());
       case "/painel-passenger":
         return MaterialPageRoute(builder: (_) => PanelPassenger());
-      case "/corrida":
+      case "/travel":
         return MaterialPageRoute(builder: (_) => Corrida(args));
       default:
         _erroRota();

@@ -60,7 +60,7 @@ class _PanelDriverState extends State<PanelDriver> {
       _adicionarListenerRequisicoes();
     } else {
       String idRequest = dadosRequest["request_id"];
-      Navigator.pushReplacementNamed(context, "/corrida", arguments: idRequest);
+      Navigator.pushReplacementNamed(context, "/travel", arguments: idRequest);
     }
   }
 
@@ -70,7 +70,7 @@ class _PanelDriverState extends State<PanelDriver> {
 
     /*
     Recupera requisicao ativa para verificar se driver está
-    atendendo alguma requisição e envia ele para tela de corrida
+    atendendo alguma requisição e envia ele para tela de travel
     */
     _recuperaRequestAtivaDriver();
   }
@@ -300,7 +300,7 @@ class _PanelDriverState extends State<PanelDriver> {
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     onTap: () {
-                                      Navigator.pushNamed(context, "/corrida",
+                                      Navigator.pushNamed(context, "/travel",
                                           arguments: idRequest);
                                     },
                                   ),

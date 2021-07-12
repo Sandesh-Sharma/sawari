@@ -412,7 +412,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   }
 
   _statusFinalizada() async {
-    //Calcula valor da corrida
+    //Calcula valor da travel
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
     double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
