@@ -28,7 +28,7 @@ class _CorridaState extends State<Corrida> {
   Set<Marker> _marcadores = {};
   Map<String, dynamic> _dadosRequest;
   String _idRequest;
-  Position _localMotorista;
+  Position _localDriver;
   String _statusRequest = StatusRequest.WAITING;
 
   //Controles para exibição na tela
@@ -64,7 +64,7 @@ class _CorridaState extends State<Corrida> {
           } else {
             //waiting
             setState(() {
-              _localMotorista = position;
+              _localDriver = position;
             });
             _statusAguardando();
           }
@@ -153,8 +153,8 @@ class _CorridaState extends State<Corrida> {
   _aceitarCorrida() async {
     //Recuperar dados do motorista
     User motorista = await UserFirebase.getDadosUserLogado();
-    motorista.latitude = _localMotorista.latitude;
-    motorista.longitude = _localMotorista.longitude;
+    motorista.latitude = _localDriver.latitude;
+    motorista.longitude = _localDriver.longitude;
 
     Firestore db = Firestore.instance;
     String idRequest = _dadosRequest["id"];
@@ -164,16 +164,16 @@ class _CorridaState extends State<Corrida> {
       "status": StatusRequest.ON_MY_WAY,
     }).then((_) {
       //atualiza requisicao ativa
-      String idPassageiro = _dadosRequest["passageiro"]["idUser"];
-      db.collection("active_request").document(idPassageiro).updateData({
+      String idPassenger = _dadosRequest["passageiro"]["idUser"];
+      db.collection("active_request").document(idPassenger).updateData({
         "status": StatusRequest.ON_MY_WAY,
       });
 
       //Salvar requisicao ativa para motorista
-      String idMotorista = motorista.idUser;
-      db.collection("active_request_motorista").document(idMotorista).setData({
+      String idDriver = motorista.idUser;
+      db.collection("active_request_motorista").document(idDriver).setData({
         "request_id": idRequest,
-        "user_id": idMotorista,
+        "user_id": idDriver,
         "status": StatusRequest.ON_MY_WAY,
       });
     });
@@ -198,7 +198,7 @@ class _CorridaState extends State<Corrida> {
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
-        "Local destino");
+        "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
@@ -222,7 +222,7 @@ class _CorridaState extends State<Corrida> {
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
-        "Local destino");
+        "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
@@ -234,23 +234,23 @@ class _CorridaState extends State<Corrida> {
         .document(_idRequest)
         .updateData({"status": StatusRequest.FINISHED});
 
-    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
+    String idPassenger = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("active_request")
-        .document(idPassageiro)
+        .document(idPassenger)
         .updateData({"status": StatusRequest.FINISHED});
 
-    String idMotorista = _dadosRequest["motorista"]["idUser"];
+    String idDriver = _dadosRequest["motorista"]["idUser"];
     db
         .collection("active_request_motorista")
-        .document(idMotorista)
+        .document(idDriver)
         .updateData({"status": StatusRequest.FINISHED});
   }
 
   _statusFinalizada() async {
     //Calcula valor da corrida
-    double latitudeDestination = _dadosRequest["destino"]["latitude"];
-    double longitudeDestination = _dadosRequest["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destination"]["latitude"];
+    double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
     double latitudeOrigem = _dadosRequest["origem"]["latitude"];
     double longitudeOrigem = _dadosRequest["origem"]["longitude"];
@@ -280,7 +280,7 @@ class _CorridaState extends State<Corrida> {
     _marcadores = {};
     Position position = Position(
         latitude: latitudeDestination, longitude: longitudeDestination);
-    _exibirHighlight(position, "assets/images/destino.png", "Destination");
+    _exibirHighlight(position, "assets/images/destination.png", "Destination");
 
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -299,11 +299,11 @@ class _CorridaState extends State<Corrida> {
         .document(_idRequest)
         .updateData({"status": StatusRequest.CONFIRMED});
 
-    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
-    db.collection("active_request").document(idPassageiro).delete();
+    String idPassenger = _dadosRequest["passageiro"]["idUser"];
+    db.collection("active_request").document(idPassenger).delete();
 
-    String idMotorista = _dadosRequest["motorista"]["idUser"];
-    db.collection("active_request_motorista").document(idMotorista).delete();
+    String idDriver = _dadosRequest["motorista"]["idUser"];
+    db.collection("active_request_motorista").document(idDriver).delete();
   }
 
   _statusEmViagem() {
@@ -312,8 +312,8 @@ class _CorridaState extends State<Corrida> {
       _finalizarCorrida();
     });
 
-    double latitudeDestination = _dadosRequest["destino"]["latitude"];
-    double longitudeDestination = _dadosRequest["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destination"]["latitude"];
+    double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
     double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
@@ -325,8 +325,8 @@ class _CorridaState extends State<Corrida> {
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
-        "assets/images/destino.png",
-        "Local destino");
+        "assets/images/destination.png",
+        "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
@@ -377,16 +377,16 @@ class _CorridaState extends State<Corrida> {
       "status": StatusRequest.TRAVEL
     });
 
-    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
+    String idPassenger = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("active_request")
-        .document(idPassageiro)
+        .document(idPassenger)
         .updateData({"status": StatusRequest.TRAVEL});
 
-    String idMotorista = _dadosRequest["motorista"]["idUser"];
+    String idDriver = _dadosRequest["motorista"]["idUser"];
     db
         .collection("active_request_motorista")
-        .document(idMotorista)
+        .document(idDriver)
         .updateData({"status": StatusRequest.TRAVEL});
   }
 

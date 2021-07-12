@@ -7,7 +7,7 @@ class Request {
   String _status;
   User _passageiro;
   User _motorista;
-  Destination _destino;
+  Destination _destination;
 
   Request() {
     Firestore db = Firestore.instance;
@@ -17,7 +17,7 @@ class Request {
   }
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> dadosPassageiro = {
+    Map<String, dynamic> dadosPassenger = {
       "name": this.passageiro.name,
       "email": this.passageiro.email,
       "typeUser": this.passageiro.typeUser,
@@ -27,29 +27,29 @@ class Request {
     };
 
     Map<String, dynamic> dadosDestination = {
-      "rua": this.destino.rua,
-      "numero": this.destino.numero,
-      "bairro": this.destino.bairro,
-      "cep": this.destino.cep,
-      "latitude": this.destino.latitude,
-      "longitude": this.destino.longitude,
+      "rua": this.destination.rua,
+      "numero": this.destination.numero,
+      "bairro": this.destination.bairro,
+      "cep": this.destination.cep,
+      "latitude": this.destination.latitude,
+      "longitude": this.destination.longitude,
     };
 
     Map<String, dynamic> dadosRequest = {
       "id": this.id,
       "status": this.status,
-      "passageiro": dadosPassageiro,
+      "passageiro": dadosPassenger,
       "motorista": null,
-      "destino": dadosDestination,
+      "destination": dadosDestination,
     };
 
     return dadosRequest;
   }
 
-  Destination get destino => _destino;
+  Destination get destination => _destination;
 
-  set destino(Destination value) {
-    _destino = value;
+  set destination(Destination value) {
+    _destination = value;
   }
 
   User get motorista => _motorista;

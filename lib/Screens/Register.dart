@@ -108,7 +108,7 @@ class _CadastroState extends State<Cadastro> {
                     style: TextStyle(fontSize: 20),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                        hintText: "Nome completo",
+                        hintText: "Complete Name",
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -160,7 +160,7 @@ class _CadastroState extends State<Cadastro> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Passageiro",
+                        "Passenger",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -180,7 +180,7 @@ class _CadastroState extends State<Cadastro> {
                             });
                           }),
                       Text(
-                        "Motorista",
+                        "Driver",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -197,7 +197,7 @@ class _CadastroState extends State<Cadastro> {
                     elevation: 30.0,
                     child: RaisedButton(
                         child: Text(
-                          "Cadastrar",
+                          "Register",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

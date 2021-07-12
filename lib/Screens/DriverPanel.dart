@@ -6,12 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uber/util/RequestStatus.dart';
 import 'package:uber/util/UserFirebase.dart';
 
-class PainelMotorista extends StatefulWidget {
+class PainelDriver extends StatefulWidget {
   @override
-  _PainelMotoristaState createState() => _PainelMotoristaState();
+  _PainelDriverState createState() => _PainelDriverState();
 }
 
-class _PainelMotoristaState extends State<PainelMotorista> {
+class _PainelDriverState extends State<PainelDriver> {
   List<String> itensMenu = ["Logout"];
   final _controller = StreamController<QuerySnapshot>.broadcast();
   Firestore db = Firestore.instance;
@@ -44,7 +44,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
     });
   }
 
-  _recuperaRequestAtivaMotorista() async {
+  _recuperaRequestAtivaDriver() async {
     //Recupera dados do usuario logado
     FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
@@ -72,7 +72,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
     Recupera requisicao ativa para verificar se motorista está
     atendendo alguma requisição e envia ele para tela de corrida
     */
-    _recuperaRequestAtivaMotorista();
+    _recuperaRequestAtivaDriver();
   }
 
   @override
@@ -265,9 +265,9 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                             DocumentSnapshot item = requests[indice];
 
                             String idRequest = item["id"];
-                            String namePassageiro = item["passageiro"]["name"];
-                            String rua = item["destino"]["rua"];
-                            String numero = item["destino"]["numero"];
+                            String namePassenger = item["passageiro"]["name"];
+                            String rua = item["destination"]["rua"];
+                            String numero = item["destination"]["numero"];
 
                             return Padding(
                               padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
@@ -292,11 +292,11 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                                   padding: EdgeInsets.all(8),
                                   child: ListTile(
                                     title: Text(
-                                      namePassageiro,
+                                      namePassenger,
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     subtitle: Text(
-                                      "destino: $rua, $numero",
+                                      "destination: $rua, $numero",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     onTap: () {
