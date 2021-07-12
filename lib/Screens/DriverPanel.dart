@@ -186,7 +186,7 @@ class _PanelDriverState extends State<PanelDriver> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 8, 16, 8),
                     child: Text(
-                      "Você não tem nenhuma requisição !",
+                      "You have no requests!",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,

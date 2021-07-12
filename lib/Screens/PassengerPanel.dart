@@ -33,7 +33,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
   //Controles para exibição na tela
   bool _exibirCaixaEnderecoDestination = true;
-  String _textoBotao = "Call uber";
+  String _textoBotao = "Call sawari";
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
 
@@ -296,7 +296,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   _statusUberNaoChamado() {
     _exibirCaixaEnderecoDestination = true;
 
-    _alterarBotaoPrincipal("Call uber", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Call sawari", Color(0xff1ebbd8), () {
       _chamarUber();
     });
 
@@ -352,7 +352,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
 
-  _statusEmViagem() {
+  _statusEmTravel() {
     _exibirCaixaEnderecoDestination = false;
     _alterarBotaoPrincipal("In travel", Colors.grey, null);
 
@@ -429,14 +429,14 @@ class _PanelPassengerState extends State<PanelPassenger> {
     double distanciaKm = distanciaEmMetros / 1000;
 
     //8 é o valor cobrado por KM
-    double valorViagem = distanciaKm * 8;
+    double valorTravel = distanciaKm * 8;
 
     //Formatar valor travel
     var f = new NumberFormat("#,##0.00", "pt_BR");
-    var valorViagemFormatado = f.format(valorViagem);
+    var valorTravelFormatado = f.format(valorTravel);
 
     _alterarBotaoPrincipal(
-        "Total - R\$ ${valorViagemFormatado}", Colors.green, () {});
+        "Total - R\$ ${valorTravelFormatado}", Colors.green, () {});
 
     _marcadores = {};
     Position position = Position(
@@ -454,7 +454,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
       _streamSubscriptionRequisicoes.cancel();
 
     _exibirCaixaEnderecoDestination = true;
-    _alterarBotaoPrincipal("Call uber", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Call sawari", Color(0xff1ebbd8), () {
       _chamarUber();
     });
 
@@ -572,7 +572,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
             _statusACaminho();
             break;
           case StatusRequest.TRAVEL:
-            _statusEmViagem();
+            _statusEmTravel();
             break;
           case StatusRequest.FINISHED:
             _statusFinalizada();

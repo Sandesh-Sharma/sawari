@@ -137,7 +137,7 @@ class _DriveState extends State<Drive> {
             _statusACaminho();
             break;
           case StatusRequest.TRAVEL:
-            _statusEmViagem();
+            _statusEmTravel();
             break;
           case StatusRequest.FINISHED:
             _statusFinalizada();
@@ -262,18 +262,18 @@ class _DriveState extends State<Drive> {
         longitudeDestination);
 
     //Converte para KM
-    double distanciaKm = distanciaEmMetros / 1000;
+    double distanciaKm = distanciaEmMetros / 100000;
 
     //8 é o valor cobrado por KM
-    double valorViagem = distanciaKm * 8;
+    double valorTravel = distanciaKm * 5;
 
     //Formatar valor travel
     var f = new NumberFormat("#,##0.00", "pt_BR");
-    var valorViagemFormatado = f.format(valorViagem);
+    var valorTravelFormatado = f.format(valorTravel);
 
-    _mensagemStatus = "Viagem finished";
+    _mensagemStatus = "Travel finished";
     _alterarBotaoPrincipal(
-        "Confirm - R\$ ${valorViagemFormatado}", Color(0xff1ebbd8), () {
+        "Confirm - रु ${valorTravelFormatado}", Color(0xff1ebbd8), () {
       _confirmarDrive();
     });
 
@@ -306,7 +306,7 @@ class _DriveState extends State<Drive> {
     db.collection("active_request_driver").document(idDriver).delete();
   }
 
-  _statusEmViagem() {
+  _statusEmTravel() {
     _mensagemStatus = "In travel";
     _alterarBotaoPrincipal("Finish travel", Color(0xff1ebbd8), () {
       _finalizarDrive();
