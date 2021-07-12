@@ -354,7 +354,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
   _statusEmViagem() {
     _exibirCaixaEnderecoDestination = false;
-    _alterarBotaoPrincipal("Em travel", Colors.grey, null);
+    _alterarBotaoPrincipal("In travel", Colors.grey, null);
 
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
     double longitudeDestination = _dadosRequest["destination"]["longitude"];

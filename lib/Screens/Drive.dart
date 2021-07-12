@@ -204,8 +204,8 @@ class _DriveState extends State<Drive> {
   }
 
   _statusACaminho() {
-    _mensagemStatus = "A caminho do passenger";
-    _alterarBotaoPrincipal("Iniciar travel", Color(0xff1ebbd8), () {
+    _mensagemStatus = "On the way to passenger";
+    _alterarBotaoPrincipal("Start travel", Color(0xff1ebbd8), () {
       _iniciarDrive();
     });
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];
@@ -307,8 +307,8 @@ class _DriveState extends State<Drive> {
   }
 
   _statusEmViagem() {
-    _mensagemStatus = "Em travel";
-    _alterarBotaoPrincipal("Finalizar travel", Color(0xff1ebbd8), () {
+    _mensagemStatus = "In travel";
+    _alterarBotaoPrincipal("Finish travel", Color(0xff1ebbd8), () {
       _finalizarDrive();
     });
 
