@@ -13,9 +13,9 @@ import 'package:uber/util/RequestStatus.dart';
 import 'package:uber/util/UserFirebase.dart';
 
 class Corrida extends StatefulWidget {
-  String idRequisicao;
+  String idRequest;
 
-  Corrida(this.idRequisicao);
+  Corrida(this.idRequest);
 
   @override
   _CorridaState createState() => _CorridaState();
@@ -26,10 +26,10 @@ class _CorridaState extends State<Corrida> {
   CameraPosition _posicaoCamera =
       CameraPosition(target: LatLng(-23.563999, -46.653256));
   Set<Marker> _marcadores = {};
-  Map<String, dynamic> _dadosRequisicao;
-  String _idRequisicao;
+  Map<String, dynamic> _dadosRequest;
+  String _idRequest;
   Position _localMotorista;
-  String _statusRequisicao = StatusRequisicao.AGUARDANDO;
+  String _statusRequest = StatusRequest.AGUARDANDO;
 
   //Controles para exibição na tela
   String _textoBotao = "Aceitar corrida";
@@ -56,11 +56,11 @@ class _CorridaState extends State<Corrida> {
 
     geolocator.getPositionStream(locationOptions).listen((Position position) {
       if (position != null) {
-        if (_idRequisicao != null && _idRequisicao.isNotEmpty) {
-          if (_statusRequisicao != StatusRequisicao.AGUARDANDO) {
+        if (_idRequest != null && _idRequest.isNotEmpty) {
+          if (_statusRequest != StatusRequest.AGUARDANDO) {
             //Atualiza local do passageiro
             UserFirebase.atualizarDadosLocalizacao(
-                _idRequisicao, position.latitude, position.longitude);
+                _idRequest, position.latitude, position.longitude);
           } else {
             //aguardando
             setState(() {
@@ -107,42 +107,42 @@ class _CorridaState extends State<Corrida> {
     });
   }
 
-  _recuperarRequisicao() async {
-    String idRequisicao = widget.idRequisicao;
+  _recuperarRequest() async {
+    String idRequest = widget.idRequest;
 
     Firestore db = Firestore.instance;
     DocumentSnapshot documentSnapshot =
-        await db.collection("requisicoes").document(idRequisicao).get();
+        await db.collection("requisicoes").document(idRequest).get();
   }
 
-  _adicionarListenerRequisicao() async {
+  _adicionarListenerRequest() async {
     Firestore db = Firestore.instance;
 
     await db
         .collection("requisicoes")
-        .document(_idRequisicao)
+        .document(_idRequest)
         .snapshots()
         .listen((snapshot) {
       if (snapshot.data != null) {
-        _dadosRequisicao = snapshot.data;
+        _dadosRequest = snapshot.data;
 
         Map<String, dynamic> dados = snapshot.data;
-        _statusRequisicao = dados["status"];
+        _statusRequest = dados["status"];
 
-        switch (_statusRequisicao) {
-          case StatusRequisicao.AGUARDANDO:
+        switch (_statusRequest) {
+          case StatusRequest.AGUARDANDO:
             _statusAguardando();
             break;
-          case StatusRequisicao.A_CAMINHO:
+          case StatusRequest.A_CAMINHO:
             _statusACaminho();
             break;
-          case StatusRequisicao.VIAGEM:
+          case StatusRequest.VIAGEM:
             _statusEmViagem();
             break;
-          case StatusRequisicao.FINALIZADA:
+          case StatusRequest.FINALIZADA:
             _statusFinalizada();
             break;
-          case StatusRequisicao.CONFIRMADA:
+          case StatusRequest.CONFIRMADA:
             _statusConfirmada();
             break;
         }
@@ -157,16 +157,16 @@ class _CorridaState extends State<Corrida> {
     motorista.longitude = _localMotorista.longitude;
 
     Firestore db = Firestore.instance;
-    String idRequisicao = _dadosRequisicao["id"];
+    String idRequest = _dadosRequest["id"];
 
-    db.collection("requisicoes").document(idRequisicao).updateData({
+    db.collection("requisicoes").document(idRequest).updateData({
       "motorista": motorista.toMap(),
-      "status": StatusRequisicao.A_CAMINHO,
+      "status": StatusRequest.A_CAMINHO,
     }).then((_) {
       //atualiza requisicao ativa
-      String idPassageiro = _dadosRequisicao["passageiro"]["idUser"];
+      String idPassageiro = _dadosRequest["passageiro"]["idUser"];
       db.collection("requisicao_ativa").document(idPassageiro).updateData({
-        "status": StatusRequisicao.A_CAMINHO,
+        "status": StatusRequest.A_CAMINHO,
       });
 
       //Salvar requisicao ativa para motorista
@@ -175,9 +175,9 @@ class _CorridaState extends State<Corrida> {
           .collection("requisicao_ativa_motorista")
           .document(idMotorista)
           .setData({
-        "id_requisicao": idRequisicao,
+        "id_requisicao": idRequest,
         "id_usuario": idMotorista,
-        "status": StatusRequisicao.A_CAMINHO,
+        "status": StatusRequest.A_CAMINHO,
       });
     });
   }
@@ -187,11 +187,11 @@ class _CorridaState extends State<Corrida> {
       _aceitarCorrida();
     });
 
-    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
+    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
@@ -211,11 +211,11 @@ class _CorridaState extends State<Corrida> {
     _alterarBotaoPrincipal("Iniciar corrida", Color(0xff1ebbd8), () {
       _iniciarCorrida();
     });
-    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
+    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
@@ -234,29 +234,29 @@ class _CorridaState extends State<Corrida> {
     Firestore db = Firestore.instance;
     db
         .collection("requisicoes")
-        .document(_idRequisicao)
-        .updateData({"status": StatusRequisicao.FINALIZADA});
+        .document(_idRequest)
+        .updateData({"status": StatusRequest.FINALIZADA});
 
-    String idPassageiro = _dadosRequisicao["passageiro"]["idUser"];
+    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("requisicao_ativa")
         .document(idPassageiro)
-        .updateData({"status": StatusRequisicao.FINALIZADA});
+        .updateData({"status": StatusRequest.FINALIZADA});
 
-    String idMotorista = _dadosRequisicao["motorista"]["idUser"];
+    String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
         .collection("requisicao_ativa_motorista")
         .document(idMotorista)
-        .updateData({"status": StatusRequisicao.FINALIZADA});
+        .updateData({"status": StatusRequest.FINALIZADA});
   }
 
   _statusFinalizada() async {
     //Calcula valor da corrida
-    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destino"]["latitude"];
+    double longitudeDestination = _dadosRequest["destino"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["origem"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["origem"]["longitude"];
+    double latitudeOrigem = _dadosRequest["origem"]["latitude"];
+    double longitudeOrigem = _dadosRequest["origem"]["longitude"];
 
     double distanciaEmMetros = await Geolocator().distanceBetween(
         latitudeOrigem,
@@ -299,13 +299,13 @@ class _CorridaState extends State<Corrida> {
     Firestore db = Firestore.instance;
     db
         .collection("requisicoes")
-        .document(_idRequisicao)
-        .updateData({"status": StatusRequisicao.CONFIRMADA});
+        .document(_idRequest)
+        .updateData({"status": StatusRequest.CONFIRMADA});
 
-    String idPassageiro = _dadosRequisicao["passageiro"]["idUser"];
+    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db.collection("requisicao_ativa").document(idPassageiro).delete();
 
-    String idMotorista = _dadosRequisicao["motorista"]["idUser"];
+    String idMotorista = _dadosRequest["motorista"]["idUser"];
     db.collection("requisicao_ativa_motorista").document(idMotorista).delete();
   }
 
@@ -315,11 +315,11 @@ class _CorridaState extends State<Corrida> {
       _finalizarCorrida();
     });
 
-    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destino"]["latitude"];
+    double longitudeDestination = _dadosRequest["destino"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
+    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
@@ -372,25 +372,25 @@ class _CorridaState extends State<Corrida> {
 
   _iniciarCorrida() {
     Firestore db = Firestore.instance;
-    db.collection("requisicoes").document(_idRequisicao).updateData({
+    db.collection("requisicoes").document(_idRequest).updateData({
       "origem": {
-        "latitude": _dadosRequisicao["motorista"]["latitude"],
-        "longitude": _dadosRequisicao["motorista"]["longitude"]
+        "latitude": _dadosRequest["motorista"]["latitude"],
+        "longitude": _dadosRequest["motorista"]["longitude"]
       },
-      "status": StatusRequisicao.VIAGEM
+      "status": StatusRequest.VIAGEM
     });
 
-    String idPassageiro = _dadosRequisicao["passageiro"]["idUser"];
+    String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("requisicao_ativa")
         .document(idPassageiro)
-        .updateData({"status": StatusRequisicao.VIAGEM});
+        .updateData({"status": StatusRequest.VIAGEM});
 
-    String idMotorista = _dadosRequisicao["motorista"]["idUser"];
+    String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
         .collection("requisicao_ativa_motorista")
         .document(idMotorista)
-        .updateData({"status": StatusRequisicao.VIAGEM});
+        .updateData({"status": StatusRequest.VIAGEM});
   }
 
   _movimentarCameraBounds(LatLngBounds latLngBounds) async {
@@ -441,10 +441,10 @@ class _CorridaState extends State<Corrida> {
   void initState() {
     super.initState();
 
-    _idRequisicao = widget.idRequisicao;
+    _idRequest = widget.idRequest;
 
     // adicionar listener para mudanças na requisicao
-    _adicionarListenerRequisicao();
+    _adicionarListenerRequest();
 
     //_recuperaUltimaLocalizacaoConhecida();
     _adicionarListenerLocalizacao();

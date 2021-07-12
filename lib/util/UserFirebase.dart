@@ -32,14 +32,14 @@ class UserFirebase {
   }
 
   static atualizarDadosLocalizacao(
-      String idRequisicao, double lat, double lon) async {
+      String idRequest, double lat, double lon) async {
     Firestore db = Firestore.instance;
 
     User motorista = await getDadosUserLogado();
     motorista.latitude = lat;
     motorista.longitude = lon;
 
-    db.collection("requisicoes").document(idRequisicao).updateData(
+    db.collection("requisicoes").document(idRequest).updateData(
       {
         "motorista": motorista.toMap(),
       },

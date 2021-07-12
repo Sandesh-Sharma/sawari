@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Destination.dart';
 import 'User.dart';
 
-class Requisicao {
+class Request {
   String _id;
   String _status;
   User _passageiro;
   User _motorista;
   Destination _destino;
 
-  Requisicao() {
+  Request() {
     Firestore db = Firestore.instance;
 
     DocumentReference ref = db.collection("requisicoes").document();
@@ -35,7 +35,7 @@ class Requisicao {
       "longitude": this.destino.longitude,
     };
 
-    Map<String, dynamic> dadosRequisicao = {
+    Map<String, dynamic> dadosRequest = {
       "id": this.id,
       "status": this.status,
       "passageiro": dadosPassageiro,
@@ -43,7 +43,7 @@ class Requisicao {
       "destino": dadosDestination,
     };
 
-    return dadosRequisicao;
+    return dadosRequest;
   }
 
   Destination get destino => _destino;

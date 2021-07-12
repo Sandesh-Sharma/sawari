@@ -1,4 +1,4 @@
-class StatusRequisicao {
+class StatusRequest {
   static const String AGUARDANDO = "aguardando";
   static const String A_CAMINHO = "a_caminho";
   static const String VIAGEM = "viagem";

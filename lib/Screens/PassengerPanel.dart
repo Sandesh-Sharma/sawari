@@ -26,9 +26,9 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   CameraPosition _posicaoCamera =
       CameraPosition(target: LatLng(-23.563999, -46.653256));
   Set<Marker> _marcadores = {};
-  String _idRequisicao;
+  String _idRequest;
   Position _localPassageiro;
-  Map<String, dynamic> _dadosRequisicao;
+  Map<String, dynamic> _dadosRequest;
   StreamSubscription<DocumentSnapshot> _streamSubscriptionRequisicoes;
 
   //Controles para exibição na tela
@@ -64,10 +64,10 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
     geolocator.getPositionStream(locationOptions).listen((Position position) {
-      if (_idRequisicao != null && _idRequisicao.isNotEmpty) {
+      if (_idRequest != null && _idRequest.isNotEmpty) {
         //Atualiza local do passageiro
         UserFirebase.atualizarDadosLocalizacao(
-            _idRequisicao, position.latitude, position.longitude);
+            _idRequest, position.latitude, position.longitude);
       } else {
         setState(() {
           _localPassageiro = position;
@@ -207,7 +207,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
                                 ),
                                 onPressed: () {
                                   //salvar requisicao
-                                  _salvarRequisicao(destino);
+                                  _salvarRequest(destino);
 
                                   Navigator.pop(contex);
                                 },
@@ -238,7 +238,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     }
   }
 
-  _salvarRequisicao(Destination destino) async {
+  _salvarRequest(Destination destino) async {
     /*
 
     + requisicao
@@ -254,10 +254,10 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     passageiro.latitude = _localPassageiro.latitude;
     passageiro.longitude = _localPassageiro.longitude;
 
-    Requisicao requisicao = Requisicao();
+    Request requisicao = Request();
     requisicao.destino = destino;
     requisicao.passageiro = passageiro;
-    requisicao.status = StatusRequisicao.AGUARDANDO;
+    requisicao.status = StatusRequest.AGUARDANDO;
 
     Firestore db = Firestore.instance;
 
@@ -268,19 +268,19 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         .setData(requisicao.toMap());
 
     //Salvar requisição ativa
-    Map<String, dynamic> dadosRequisicaoAtiva = {};
-    dadosRequisicaoAtiva["id_requisicao"] = requisicao.id;
-    dadosRequisicaoAtiva["id_usuario"] = passageiro.idUser;
-    dadosRequisicaoAtiva["status"] = StatusRequisicao.AGUARDANDO;
+    Map<String, dynamic> dadosRequestAtiva = {};
+    dadosRequestAtiva["id_requisicao"] = requisicao.id;
+    dadosRequestAtiva["id_usuario"] = passageiro.idUser;
+    dadosRequestAtiva["status"] = StatusRequest.AGUARDANDO;
 
     db
         .collection("requisicao_ativa")
         .document(passageiro.idUser)
-        .setData(dadosRequisicaoAtiva);
+        .setData(dadosRequestAtiva);
 
     //Adicionar listener requisicao
     if (_streamSubscriptionRequisicoes == null) {
-      _adicionarListenerRequisicao(requisicao.id);
+      _adicionarListenerRequest(requisicao.id);
     }
   }
 
@@ -317,8 +317,8 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
       _cancelarUber();
     });
 
-    double passageiroLat = _dadosRequisicao["passageiro"]["latitude"];
-    double passageiroLon = _dadosRequisicao["passageiro"]["longitude"];
+    double passageiroLat = _dadosRequest["passageiro"]["latitude"];
+    double passageiroLon = _dadosRequest["passageiro"]["longitude"];
     Position position =
         Position(latitude: passageiroLat, longitude: passageiroLon);
     _exibirHighlightPassageiro(position);
@@ -332,11 +332,11 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     _alterarBotaoPrincipal("Motorista a caminho", Colors.grey, () {});
 
-    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
+    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
@@ -355,11 +355,11 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     _exibirCaixaEnderecoDestination = false;
     _alterarBotaoPrincipal("Em viagem", Colors.grey, null);
 
-    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destino"]["latitude"];
+    double longitudeDestination = _dadosRequest["destino"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
+    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
@@ -412,11 +412,11 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
   _statusFinalizada() async {
     //Calcula valor da corrida
-    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequest["destino"]["latitude"];
+    double longitudeDestination = _dadosRequest["destino"]["longitude"];
 
-    double latitudeOrigem = _dadosRequisicao["origem"]["latitude"];
-    double longitudeOrigem = _dadosRequisicao["origem"]["longitude"];
+    double latitudeOrigem = _dadosRequest["origem"]["latitude"];
+    double longitudeOrigem = _dadosRequest["origem"]["longitude"];
 
     double distanciaEmMetros = await Geolocator().distanceBetween(
         latitudeOrigem,
@@ -457,7 +457,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
       _chamarUber();
     });
 
-    _dadosRequisicao = {};
+    _dadosRequest = {};
   }
 
   _exibirHighlight(Position local, String icone, String infoWindow) async {
@@ -528,13 +528,13 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     Firestore db = Firestore.instance;
     db
         .collection("requisicoes")
-        .document(_idRequisicao)
-        .updateData({"status": StatusRequisicao.CANCELADA}).then((_) {
+        .document(_idRequest)
+        .updateData({"status": StatusRequest.CANCELADA}).then((_) {
       db.collection("requisicao_ativa").document(firebaseUser.uid).delete();
     });
   }
 
-  _recuperaRequisicaoAtiva() async {
+  _recuperaRequestAtiva() async {
     FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
     Firestore db = Firestore.instance;
@@ -545,40 +545,40 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     if (documentSnapshot.data != null) {
       Map<String, dynamic> dados = documentSnapshot.data;
-      _idRequisicao = dados["id_requisicao"];
-      _adicionarListenerRequisicao(_idRequisicao);
+      _idRequest = dados["id_requisicao"];
+      _adicionarListenerRequest(_idRequest);
     } else {
       _statusUberNaoChamado();
     }
   }
 
-  _adicionarListenerRequisicao(String idRequisicao) async {
+  _adicionarListenerRequest(String idRequest) async {
     Firestore db = Firestore.instance;
     _streamSubscriptionRequisicoes = await db
         .collection("requisicoes")
-        .document(idRequisicao)
+        .document(idRequest)
         .snapshots()
         .listen((snapshot) {
       if (snapshot.data != null) {
         Map<String, dynamic> dados = snapshot.data;
-        _dadosRequisicao = dados;
+        _dadosRequest = dados;
         String status = dados["status"];
-        _idRequisicao = dados["id_requisicao"];
+        _idRequest = dados["id_requisicao"];
 
         switch (status) {
-          case StatusRequisicao.AGUARDANDO:
+          case StatusRequest.AGUARDANDO:
             _statusAguardando();
             break;
-          case StatusRequisicao.A_CAMINHO:
+          case StatusRequest.A_CAMINHO:
             _statusACaminho();
             break;
-          case StatusRequisicao.VIAGEM:
+          case StatusRequest.VIAGEM:
             _statusEmViagem();
             break;
-          case StatusRequisicao.FINALIZADA:
+          case StatusRequest.FINALIZADA:
             _statusFinalizada();
             break;
-          case StatusRequisicao.CONFIRMADA:
+          case StatusRequest.CONFIRMADA:
             _statusConfirmada();
             break;
         }
@@ -591,7 +591,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     super.initState();
 
     //adicionar listener para requisicao ativa
-    _recuperaRequisicaoAtiva();
+    _recuperaRequestAtiva();
 
     //_recuperaUltimaLocalizacaoConhecida();
     _adicionarListenerLocalizacao();

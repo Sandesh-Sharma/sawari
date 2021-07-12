@@ -36,7 +36,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
   Stream<QuerySnapshot> _adicionarListenerRequisicoes() {
     final stream = db
         .collection("requisicoes")
-        .where("status", isEqualTo: StatusRequisicao.AGUARDANDO)
+        .where("status", isEqualTo: StatusRequest.AGUARDANDO)
         .snapshots();
 
     stream.listen((dados) {
@@ -44,7 +44,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
     });
   }
 
-  _recuperaRequisicaoAtivaMotorista() async {
+  _recuperaRequestAtivaMotorista() async {
     //Recupera dados do usuario logado
     FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
@@ -54,14 +54,13 @@ class _PainelMotoristaState extends State<PainelMotorista> {
         .document(firebaseUser.uid)
         .get();
 
-    var dadosRequisicao = documentSnapshot.data;
+    var dadosRequest = documentSnapshot.data;
 
-    if (dadosRequisicao == null) {
+    if (dadosRequest == null) {
       _adicionarListenerRequisicoes();
     } else {
-      String idRequisicao = dadosRequisicao["id_requisicao"];
-      Navigator.pushReplacementNamed(context, "/corrida",
-          arguments: idRequisicao);
+      String idRequest = dadosRequest["id_requisicao"];
+      Navigator.pushReplacementNamed(context, "/corrida", arguments: idRequest);
     }
   }
 
@@ -73,7 +72,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
     Recupera requisicao ativa para verificar se motorista está
     atendendo alguma requisição e envia ele para tela de corrida
     */
-    _recuperaRequisicaoAtivaMotorista();
+    _recuperaRequestAtivaMotorista();
   }
 
   @override
@@ -265,7 +264,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                                 querySnapshot.documents.toList();
                             DocumentSnapshot item = requisicoes[indice];
 
-                            String idRequisicao = item["id"];
+                            String idRequest = item["id"];
                             String nomePassageiro = item["passageiro"]["nome"];
                             String rua = item["destino"]["rua"];
                             String numero = item["destino"]["numero"];
@@ -302,7 +301,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                                     ),
                                     onTap: () {
                                       Navigator.pushNamed(context, "/corrida",
-                                          arguments: idRequisicao);
+                                          arguments: idRequest);
                                     },
                                   ),
                                 ),
