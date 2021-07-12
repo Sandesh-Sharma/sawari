@@ -29,7 +29,7 @@ class _CorridaState extends State<Corrida> {
   Map<String, dynamic> _dadosRequest;
   String _idRequest;
   Position _localMotorista;
-  String _statusRequest = StatusRequest.AGUARDANDO;
+  String _statusRequest = StatusRequest.WAITING;
 
   //Controles para exibição na tela
   String _textoBotao = "Aceitar corrida";
@@ -57,12 +57,12 @@ class _CorridaState extends State<Corrida> {
     geolocator.getPositionStream(locationOptions).listen((Position position) {
       if (position != null) {
         if (_idRequest != null && _idRequest.isNotEmpty) {
-          if (_statusRequest != StatusRequest.AGUARDANDO) {
+          if (_statusRequest != StatusRequest.WAITING) {
             //Atualiza local do passageiro
             UserFirebase.atualizarDadosLocalizacao(
                 _idRequest, position.latitude, position.longitude);
           } else {
-            //aguardando
+            //waiting
             setState(() {
               _localMotorista = position;
             });
@@ -130,19 +130,19 @@ class _CorridaState extends State<Corrida> {
         _statusRequest = dados["status"];
 
         switch (_statusRequest) {
-          case StatusRequest.AGUARDANDO:
+          case StatusRequest.WAITING:
             _statusAguardando();
             break;
-          case StatusRequest.A_CAMINHO:
+          case StatusRequest.ON_MY_WAY:
             _statusACaminho();
             break;
-          case StatusRequest.VIAGEM:
+          case StatusRequest.TRAVEL:
             _statusEmViagem();
             break;
-          case StatusRequest.FINALIZADA:
+          case StatusRequest.FINISHED:
             _statusFinalizada();
             break;
-          case StatusRequest.CONFIRMADA:
+          case StatusRequest.CONFIRMED:
             _statusConfirmada();
             break;
         }
@@ -161,20 +161,20 @@ class _CorridaState extends State<Corrida> {
 
     db.collection("requests").document(idRequest).updateData({
       "motorista": motorista.toMap(),
-      "status": StatusRequest.A_CAMINHO,
+      "status": StatusRequest.ON_MY_WAY,
     }).then((_) {
       //atualiza requisicao ativa
       String idPassageiro = _dadosRequest["passageiro"]["idUser"];
       db.collection("active_request").document(idPassageiro).updateData({
-        "status": StatusRequest.A_CAMINHO,
+        "status": StatusRequest.ON_MY_WAY,
       });
 
       //Salvar requisicao ativa para motorista
       String idMotorista = motorista.idUser;
       db.collection("active_request_motorista").document(idMotorista).setData({
-        "id_requisicao": idRequest,
-        "id_usuario": idMotorista,
-        "status": StatusRequest.A_CAMINHO,
+        "request_id": idRequest,
+        "user_id": idMotorista,
+        "status": StatusRequest.ON_MY_WAY,
       });
     });
   }
@@ -232,19 +232,19 @@ class _CorridaState extends State<Corrida> {
     db
         .collection("requests")
         .document(_idRequest)
-        .updateData({"status": StatusRequest.FINALIZADA});
+        .updateData({"status": StatusRequest.FINISHED});
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("active_request")
         .document(idPassageiro)
-        .updateData({"status": StatusRequest.FINALIZADA});
+        .updateData({"status": StatusRequest.FINISHED});
 
     String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
         .collection("active_request_motorista")
         .document(idMotorista)
-        .updateData({"status": StatusRequest.FINALIZADA});
+        .updateData({"status": StatusRequest.FINISHED});
   }
 
   _statusFinalizada() async {
@@ -267,11 +267,11 @@ class _CorridaState extends State<Corrida> {
     //8 é o valor cobrado por KM
     double valorViagem = distanciaKm * 8;
 
-    //Formatar valor viagem
+    //Formatar valor travel
     var f = new NumberFormat("#,##0.00", "pt_BR");
     var valorViagemFormatado = f.format(valorViagem);
 
-    _mensagemStatus = "Viagem finalizada";
+    _mensagemStatus = "Viagem finished";
     _alterarBotaoPrincipal(
         "Confirmar - R\$ ${valorViagemFormatado}", Color(0xff1ebbd8), () {
       _confirmarCorrida();
@@ -297,7 +297,7 @@ class _CorridaState extends State<Corrida> {
     db
         .collection("requests")
         .document(_idRequest)
-        .updateData({"status": StatusRequest.CONFIRMADA});
+        .updateData({"status": StatusRequest.CONFIRMED});
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db.collection("active_request").document(idPassageiro).delete();
@@ -307,7 +307,7 @@ class _CorridaState extends State<Corrida> {
   }
 
   _statusEmViagem() {
-    _mensagemStatus = "Em viagem";
+    _mensagemStatus = "Em travel";
     _alterarBotaoPrincipal("Finalizar corrida", Color(0xff1ebbd8), () {
       _finalizarCorrida();
     });
@@ -374,20 +374,20 @@ class _CorridaState extends State<Corrida> {
         "latitude": _dadosRequest["motorista"]["latitude"],
         "longitude": _dadosRequest["motorista"]["longitude"]
       },
-      "status": StatusRequest.VIAGEM
+      "status": StatusRequest.TRAVEL
     });
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
         .collection("active_request")
         .document(idPassageiro)
-        .updateData({"status": StatusRequest.VIAGEM});
+        .updateData({"status": StatusRequest.TRAVEL});
 
     String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
         .collection("active_request_motorista")
         .document(idMotorista)
-        .updateData({"status": StatusRequest.VIAGEM});
+        .updateData({"status": StatusRequest.TRAVEL});
   }
 
   _movimentarCameraBounds(LatLngBounds latLngBounds) async {

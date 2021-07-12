@@ -246,7 +246,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         + destino (rua, endereco, latitude...)
         + passageiro (name, email...)
         + motorista (name, email..)
-        + status (aguardando, a_caminho...finalizada)
+        + status (waiting, on_my_way...finished)
 
     * */
 
@@ -257,7 +257,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     Request requisicao = Request();
     requisicao.destino = destino;
     requisicao.passageiro = passageiro;
-    requisicao.status = StatusRequest.AGUARDANDO;
+    requisicao.status = StatusRequest.WAITING;
 
     Firestore db = Firestore.instance;
 
@@ -269,9 +269,9 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     //Salvar requisição ativa
     Map<String, dynamic> dadosRequestAtiva = {};
-    dadosRequestAtiva["id_requisicao"] = requisicao.id;
-    dadosRequestAtiva["id_usuario"] = passageiro.idUser;
-    dadosRequestAtiva["status"] = StatusRequest.AGUARDANDO;
+    dadosRequestAtiva["request_id"] = requisicao.id;
+    dadosRequestAtiva["user_id"] = passageiro.idUser;
+    dadosRequestAtiva["status"] = StatusRequest.WAITING;
 
     db
         .collection("active_request")
@@ -353,7 +353,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
   _statusEmViagem() {
     _exibirCaixaEnderecoDestination = false;
-    _alterarBotaoPrincipal("Em viagem", Colors.grey, null);
+    _alterarBotaoPrincipal("Em travel", Colors.grey, null);
 
     double latitudeDestination = _dadosRequest["destino"]["latitude"];
     double longitudeDestination = _dadosRequest["destino"]["longitude"];
@@ -430,7 +430,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     //8 é o valor cobrado por KM
     double valorViagem = distanciaKm * 8;
 
-    //Formatar valor viagem
+    //Formatar valor travel
     var f = new NumberFormat("#,##0.00", "pt_BR");
     var valorViagemFormatado = f.format(valorViagem);
 
@@ -529,7 +529,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     db
         .collection("requests")
         .document(_idRequest)
-        .updateData({"status": StatusRequest.CANCELADA}).then((_) {
+        .updateData({"status": StatusRequest.CANCELLED}).then((_) {
       db.collection("active_request").document(firebaseUser.uid).delete();
     });
   }
@@ -543,7 +543,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     if (documentSnapshot.data != null) {
       Map<String, dynamic> dados = documentSnapshot.data;
-      _idRequest = dados["id_requisicao"];
+      _idRequest = dados["request_id"];
       _adicionarListenerRequest(_idRequest);
     } else {
       _statusUberNaoChamado();
@@ -561,22 +561,22 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         Map<String, dynamic> dados = snapshot.data;
         _dadosRequest = dados;
         String status = dados["status"];
-        _idRequest = dados["id_requisicao"];
+        _idRequest = dados["request_id"];
 
         switch (status) {
-          case StatusRequest.AGUARDANDO:
+          case StatusRequest.WAITING:
             _statusAguardando();
             break;
-          case StatusRequest.A_CAMINHO:
+          case StatusRequest.ON_MY_WAY:
             _statusACaminho();
             break;
-          case StatusRequest.VIAGEM:
+          case StatusRequest.TRAVEL:
             _statusEmViagem();
             break;
-          case StatusRequest.FINALIZADA:
+          case StatusRequest.FINISHED:
             _statusFinalizada();
             break;
-          case StatusRequest.CONFIRMADA:
+          case StatusRequest.CONFIRMED:
             _statusConfirmada();
             break;
         }

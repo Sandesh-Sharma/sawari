@@ -36,7 +36,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
   Stream<QuerySnapshot> _adicionarListenerRequisicoes() {
     final stream = db
         .collection("requests")
-        .where("status", isEqualTo: StatusRequest.AGUARDANDO)
+        .where("status", isEqualTo: StatusRequest.WAITING)
         .snapshots();
 
     stream.listen((dados) {
@@ -59,7 +59,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
     if (dadosRequest == null) {
       _adicionarListenerRequisicoes();
     } else {
-      String idRequest = dadosRequest["id_requisicao"];
+      String idRequest = dadosRequest["request_id"];
       Navigator.pushReplacementNamed(context, "/corrida", arguments: idRequest);
     }
   }
