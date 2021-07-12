@@ -1,4 +1,4 @@
-class Destino {
+class Destination {
   String _rua;
   String _numero;
   String _cidade;
@@ -8,7 +8,7 @@ class Destino {
   double _latitude;
   double _longitude;
 
-  Destino();
+  Destination();
 
   double get longitude => _longitude;
 

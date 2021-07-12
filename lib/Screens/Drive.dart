@@ -187,8 +187,8 @@ class _CorridaState extends State<Corrida> {
       _aceitarCorrida();
     });
 
-    double latitudeDestino = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
@@ -196,12 +196,12 @@ class _CorridaState extends State<Corrida> {
     Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
         "assets/images/motorista.png", "Local motorista");
 
-    Marcador marcadorDestino = Marcador(
-        LatLng(latitudeDestino, longitudeDestino),
+    Marcador marcadorDestination = Marcador(
+        LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
   }
 
   _statusACaminho() {
@@ -209,8 +209,8 @@ class _CorridaState extends State<Corrida> {
     _alterarBotaoPrincipal("Iniciar corrida", Color(0xff1ebbd8), () {
       _iniciarCorrida();
     });
-    double latitudeDestino = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
@@ -218,12 +218,12 @@ class _CorridaState extends State<Corrida> {
     Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
         "assets/images/motorista.png", "Local motorista");
 
-    Marcador marcadorDestino = Marcador(
-        LatLng(latitudeDestino, longitudeDestino),
+    Marcador marcadorDestination = Marcador(
+        LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
   }
 
   _finalizarCorrida() {
@@ -248,14 +248,17 @@ class _CorridaState extends State<Corrida> {
 
   _statusFinalizada() async {
     //Calcula valor da corrida
-    double latitudeDestino = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["origem"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["origem"]["longitude"];
 
     double distanciaEmMetros = await Geolocator().distanceBetween(
-        latitudeOrigem, longitudeOrigem, latitudeDestino, longitudeDestino);
+        latitudeOrigem,
+        longitudeOrigem,
+        latitudeDestination,
+        longitudeDestination);
 
     //Converte para KM
     double distanciaKm = distanciaEmMetros / 1000;
@@ -274,9 +277,9 @@ class _CorridaState extends State<Corrida> {
     });
 
     _marcadores = {};
-    Position position =
-        Position(latitude: latitudeDestino, longitude: longitudeDestino);
-    _exibirMarcador(position, "assets/images/destino.png", "Destino");
+    Position position = Position(
+        latitude: latitudeDestination, longitude: longitudeDestination);
+    _exibirMarcador(position, "assets/images/destino.png", "Destination");
 
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -308,8 +311,8 @@ class _CorridaState extends State<Corrida> {
       _finalizarCorrida();
     });
 
-    double latitudeDestino = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
@@ -317,41 +320,41 @@ class _CorridaState extends State<Corrida> {
     Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
         "assets/images/motorista.png", "Local motorista");
 
-    Marcador marcadorDestino = Marcador(
-        LatLng(latitudeDestino, longitudeDestino),
+    Marcador marcadorDestination = Marcador(
+        LatLng(latitudeDestination, longitudeDestination),
         "assets/images/destino.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
   }
 
   _exibirCentralizarDoisMarcadores(
-      Marcador marcadorOrigem, Marcador marcadorDestino) {
+      Marcador marcadorOrigem, Marcador marcadorDestination) {
     double latitudeOrigem = marcadorOrigem.local.latitude;
     double longitudeOrigem = marcadorOrigem.local.longitude;
 
-    double latitudeDestino = marcadorDestino.local.latitude;
-    double longitudeDestino = marcadorDestino.local.longitude;
+    double latitudeDestination = marcadorDestination.local.latitude;
+    double longitudeDestination = marcadorDestination.local.longitude;
 
     //Exibir dois marcadores
-    _exibirDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirDoisMarcadores(marcadorOrigem, marcadorDestination);
 
     //'southwest.latitude <= northeast.latitude': is not true
     var nLat, nLon, sLat, sLon;
 
-    if (latitudeOrigem <= latitudeDestino) {
+    if (latitudeOrigem <= latitudeDestination) {
       sLat = latitudeOrigem;
-      nLat = latitudeDestino;
+      nLat = latitudeDestination;
     } else {
-      sLat = latitudeDestino;
+      sLat = latitudeDestination;
       nLat = latitudeOrigem;
     }
 
-    if (longitudeOrigem <= longitudeDestino) {
+    if (longitudeOrigem <= longitudeDestination) {
       sLon = longitudeOrigem;
-      nLon = longitudeDestino;
+      nLon = longitudeDestination;
     } else {
-      sLon = longitudeDestino;
+      sLon = longitudeDestination;
       nLon = longitudeOrigem;
     }
     //-23.560925, -46.650623
@@ -390,11 +393,11 @@ class _CorridaState extends State<Corrida> {
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 100));
   }
 
-  _exibirDoisMarcadores(Marcador marcadorOrigem, Marcador marcadorDestino) {
+  _exibirDoisMarcadores(Marcador marcadorOrigem, Marcador marcadorDestination) {
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     LatLng latLngOrigem = marcadorOrigem.local;
-    LatLng latLngDestino = marcadorDestino.local;
+    LatLng latLngDestination = marcadorDestination.local;
 
     Set<Marker> _listaMarcadores = {};
     BitmapDescriptor.fromAssetImage(
@@ -411,14 +414,15 @@ class _CorridaState extends State<Corrida> {
 
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: pixelRatio),
-            marcadorDestino.caminhoImagem)
+            marcadorDestination.caminhoImagem)
         .then((BitmapDescriptor icone) {
-      Marker mDestino = Marker(
-          markerId: MarkerId(marcadorDestino.caminhoImagem),
-          position: LatLng(latLngDestino.latitude, latLngDestino.longitude),
-          infoWindow: InfoWindow(title: marcadorDestino.titulo),
+      Marker mDestination = Marker(
+          markerId: MarkerId(marcadorDestination.caminhoImagem),
+          position:
+              LatLng(latLngDestination.latitude, latLngDestination.longitude),
+          infoWindow: InfoWindow(title: marcadorDestination.titulo),
           icon: icone);
-      _listaMarcadores.add(mDestino);
+      _listaMarcadores.add(mDestination);
     });
 
     setState(() {

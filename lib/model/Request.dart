@@ -7,7 +7,7 @@ class Requisicao {
   String _status;
   User _passageiro;
   User _motorista;
-  Destino _destino;
+  Destination _destino;
 
   Requisicao() {
     Firestore db = Firestore.instance;
@@ -26,7 +26,7 @@ class Requisicao {
       "longitude": this.passageiro.longitude,
     };
 
-    Map<String, dynamic> dadosDestino = {
+    Map<String, dynamic> dadosDestination = {
       "rua": this.destino.rua,
       "numero": this.destino.numero,
       "bairro": this.destino.bairro,
@@ -40,15 +40,15 @@ class Requisicao {
       "status": this.status,
       "passageiro": dadosPassageiro,
       "motorista": null,
-      "destino": dadosDestino,
+      "destino": dadosDestination,
     };
 
     return dadosRequisicao;
   }
 
-  Destino get destino => _destino;
+  Destination get destino => _destino;
 
-  set destino(Destino value) {
+  set destino(Destination value) {
     _destino = value;
   }
 

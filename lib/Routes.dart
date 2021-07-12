@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:uber/screens/Cadastro.dart';
-import 'package:uber/screens/Corrida.dart';
+import 'package:uber/screens/Drive.dart';
+import 'package:uber/screens/Register.dart';
 import 'package:uber/screens/Home.dart';
-import 'package:uber/screens/PainelMotorista.dart';
-import 'package:uber/screens/PainelPassageiro.dart';
+import 'package:uber/screens/DriverPanel.dart';
+import 'package:uber/screens/PassengerPanel.dart';
 
 class Rotas {
   static Route<dynamic> gerarRotas(RouteSettings settings) {

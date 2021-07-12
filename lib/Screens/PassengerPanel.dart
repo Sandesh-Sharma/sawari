@@ -20,7 +20,7 @@ class PainelPassageiro extends StatefulWidget {
 }
 
 class _PainelPassageiroState extends State<PainelPassageiro> {
-  TextEditingController _controllerDestino = TextEditingController();
+  TextEditingController _controllerDestination = TextEditingController();
   List<String> itensMenu = ["Deslogar"];
   Completer<GoogleMapController> _controller = Completer();
   CameraPosition _posicaoCamera =
@@ -32,7 +32,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   StreamSubscription<DocumentSnapshot> _streamSubscriptionRequisicoes;
 
   //Controles para exibição na tela
-  bool _exibirCaixaEnderecoDestino = true;
+  bool _exibirCaixaEnderecoDestination = true;
   String _textoBotao = "Chamar uber";
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
@@ -119,15 +119,15 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _chamarUber() async {
-    String enderecoDestino = _controllerDestino.text;
+    String enderecoDestination = _controllerDestination.text;
 
-    if (enderecoDestino.isNotEmpty) {
+    if (enderecoDestination.isNotEmpty) {
       List<Placemark> listaEnderecos =
-          await Geolocator().placemarkFromAddress(enderecoDestino);
+          await Geolocator().placemarkFromAddress(enderecoDestination);
 
       if (listaEnderecos != null && listaEnderecos.length > 0) {
         Placemark endereco = listaEnderecos[0];
-        Destino destino = Destino();
+        Destination destino = Destination();
         destino.cidade = endereco.administrativeArea;
         destino.cep = endereco.postalCode;
         destino.bairro = endereco.subLocality;
@@ -238,7 +238,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     }
   }
 
-  _salvarRequisicao(Destino destino) async {
+  _salvarRequisicao(Destination destino) async {
     /*
 
     + requisicao
@@ -293,7 +293,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _statusUberNaoChamado() {
-    _exibirCaixaEnderecoDestino = true;
+    _exibirCaixaEnderecoDestination = true;
 
     _alterarBotaoPrincipal("Chamar uber", Color(0xff1ebbd8), () {
       _chamarUber();
@@ -311,7 +311,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _statusAguardando() {
-    _exibirCaixaEnderecoDestino = false;
+    _exibirCaixaEnderecoDestination = false;
 
     _alterarBotaoPrincipal("Cancelar", Colors.red, () {
       _cancelarUber();
@@ -328,12 +328,12 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _statusACaminho() {
-    _exibirCaixaEnderecoDestino = false;
+    _exibirCaixaEnderecoDestination = false;
 
     _alterarBotaoPrincipal("Motorista a caminho", Colors.grey, () {});
 
-    double latitudeDestino = _dadosRequisicao["passageiro"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["passageiro"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["passageiro"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
@@ -341,20 +341,20 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
         "assets/images/motorista.png", "Local motorista");
 
-    Marcador marcadorDestino = Marcador(
-        LatLng(latitudeDestino, longitudeDestino),
+    Marcador marcadorDestination = Marcador(
+        LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
   }
 
   _statusEmViagem() {
-    _exibirCaixaEnderecoDestino = false;
+    _exibirCaixaEnderecoDestination = false;
     _alterarBotaoPrincipal("Em viagem", Colors.grey, null);
 
-    double latitudeDestino = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
@@ -362,41 +362,41 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
         "assets/images/motorista.png", "Local motorista");
 
-    Marcador marcadorDestino = Marcador(
-        LatLng(latitudeDestino, longitudeDestino),
+    Marcador marcadorDestination = Marcador(
+        LatLng(latitudeDestination, longitudeDestination),
         "assets/images/destino.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
   }
 
   _exibirCentralizarDoisMarcadores(
-      Marcador marcadorOrigem, Marcador marcadorDestino) {
+      Marcador marcadorOrigem, Marcador marcadorDestination) {
     double latitudeOrigem = marcadorOrigem.local.latitude;
     double longitudeOrigem = marcadorOrigem.local.longitude;
 
-    double latitudeDestino = marcadorDestino.local.latitude;
-    double longitudeDestino = marcadorDestino.local.longitude;
+    double latitudeDestination = marcadorDestination.local.latitude;
+    double longitudeDestination = marcadorDestination.local.longitude;
 
     //Exibir dois marcadores
-    _exibirDoisMarcadores(marcadorOrigem, marcadorDestino);
+    _exibirDoisMarcadores(marcadorOrigem, marcadorDestination);
 
     //'southwest.latitude <= northeast.latitude': is not true
     var nLat, nLon, sLat, sLon;
 
-    if (latitudeOrigem <= latitudeDestino) {
+    if (latitudeOrigem <= latitudeDestination) {
       sLat = latitudeOrigem;
-      nLat = latitudeDestino;
+      nLat = latitudeDestination;
     } else {
-      sLat = latitudeDestino;
+      sLat = latitudeDestination;
       nLat = latitudeOrigem;
     }
 
-    if (longitudeOrigem <= longitudeDestino) {
+    if (longitudeOrigem <= longitudeDestination) {
       sLon = longitudeOrigem;
-      nLon = longitudeDestino;
+      nLon = longitudeDestination;
     } else {
-      sLon = longitudeDestino;
+      sLon = longitudeDestination;
       nLon = longitudeOrigem;
     }
     //-23.560925, -46.650623
@@ -408,14 +408,17 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
   _statusFinalizada() async {
     //Calcula valor da corrida
-    double latitudeDestino = _dadosRequisicao["destino"]["latitude"];
-    double longitudeDestino = _dadosRequisicao["destino"]["longitude"];
+    double latitudeDestination = _dadosRequisicao["destino"]["latitude"];
+    double longitudeDestination = _dadosRequisicao["destino"]["longitude"];
 
     double latitudeOrigem = _dadosRequisicao["origem"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["origem"]["longitude"];
 
     double distanciaEmMetros = await Geolocator().distanceBetween(
-        latitudeOrigem, longitudeOrigem, latitudeDestino, longitudeDestino);
+        latitudeOrigem,
+        longitudeOrigem,
+        latitudeDestination,
+        longitudeDestination);
 
     //Converte para KM
     double distanciaKm = distanciaEmMetros / 1000;
@@ -431,9 +434,9 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         "Total - R\$ ${valorViagemFormatado}", Colors.green, () {});
 
     _marcadores = {};
-    Position position =
-        Position(latitude: latitudeDestino, longitude: longitudeDestino);
-    _exibirMarcador(position, "assets/images/destino.png", "Destino");
+    Position position = Position(
+        latitude: latitudeDestination, longitude: longitudeDestination);
+    _exibirMarcador(position, "assets/images/destino.png", "Destination");
 
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -445,7 +448,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     if (_streamSubscriptionRequisicoes != null)
       _streamSubscriptionRequisicoes.cancel();
 
-    _exibirCaixaEnderecoDestino = true;
+    _exibirCaixaEnderecoDestination = true;
     _alterarBotaoPrincipal("Chamar uber", Color(0xff1ebbd8), () {
       _chamarUber();
     });
@@ -477,11 +480,11 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 100));
   }
 
-  _exibirDoisMarcadores(Marcador marcadorOrigem, Marcador marcadorDestino) {
+  _exibirDoisMarcadores(Marcador marcadorOrigem, Marcador marcadorDestination) {
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     LatLng latLngOrigem = marcadorOrigem.local;
-    LatLng latLngDestino = marcadorDestino.local;
+    LatLng latLngDestination = marcadorDestination.local;
 
     Set<Marker> _listaMarcadores = {};
     BitmapDescriptor.fromAssetImage(
@@ -498,14 +501,15 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: pixelRatio),
-            marcadorDestino.caminhoImagem)
+            marcadorDestination.caminhoImagem)
         .then((BitmapDescriptor icone) {
-      Marker mDestino = Marker(
-          markerId: MarkerId(marcadorDestino.caminhoImagem),
-          position: LatLng(latLngDestino.latitude, latLngDestino.longitude),
-          infoWindow: InfoWindow(title: marcadorDestino.titulo),
+      Marker mDestination = Marker(
+          markerId: MarkerId(marcadorDestination.caminhoImagem),
+          position:
+              LatLng(latLngDestination.latitude, latLngDestination.longitude),
+          infoWindow: InfoWindow(title: marcadorDestination.titulo),
           icon: icone);
-      _listaMarcadores.add(mDestino);
+      _listaMarcadores.add(mDestination);
     });
 
     setState(() {
@@ -621,7 +625,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
               //-23,559200, -46,658878
             ),
             Visibility(
-              visible: _exibirCaixaEnderecoDestino,
+              visible: _exibirCaixaEnderecoDestination,
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -672,7 +676,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
                             borderRadius: BorderRadius.circular(3),
                             color: Colors.white.withOpacity(0.9)),
                         child: TextField(
-                          controller: _controllerDestino,
+                          controller: _controllerDestination,
                           decoration: InputDecoration(
                             icon: Container(
                               margin: EdgeInsets.only(left: 20),
