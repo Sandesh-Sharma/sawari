@@ -18,15 +18,15 @@ class UserFirebase {
         await db.collection("users").document(idUser).get();
 
     Map<String, dynamic> dados = snapshot.data;
-    String tipoUser = dados["tipoUser"];
+    String typeUser = dados["typeUser"];
     String email = dados["email"];
-    String nome = dados["nome"];
+    String name = dados["name"];
 
     User usuario = User();
     usuario.idUser = idUser;
-    usuario.tipoUser = tipoUser;
+    usuario.typeUser = typeUser;
     usuario.email = email;
-    usuario.nome = nome;
+    usuario.name = name;
 
     return usuario;
   }

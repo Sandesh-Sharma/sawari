@@ -244,8 +244,8 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     + requisicao
       + ID_REQUISICAO
         + destino (rua, endereco, latitude...)
-        + passageiro (nome, email...)
-        + motorista (nome, email..)
+        + passageiro (name, email...)
+        + motorista (name, email..)
         + status (aguardando, a_caminho...finalizada)
 
     * */

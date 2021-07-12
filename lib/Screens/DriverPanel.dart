@@ -265,7 +265,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                             DocumentSnapshot item = requests[indice];
 
                             String idRequest = item["id"];
-                            String nomePassageiro = item["passageiro"]["nome"];
+                            String namePassageiro = item["passageiro"]["name"];
                             String rua = item["destino"]["rua"];
                             String numero = item["destino"]["numero"];
 
@@ -292,7 +292,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                                   padding: EdgeInsets.all(8),
                                   child: ListTile(
                                     title: Text(
-                                      nomePassageiro,
+                                      namePassageiro,
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     subtitle: Text(

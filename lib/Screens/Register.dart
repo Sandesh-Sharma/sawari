@@ -12,24 +12,24 @@ class _CadastroState extends State<Cadastro> {
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  bool _tipoUser = false;
+  bool _typeUser = false;
   String _mensagemErro = "";
 
   _validarCampos() {
     //Recuperar dados dos campos
-    String nome = _controllerNome.text;
+    String name = _controllerNome.text;
     String email = _controllerEmail.text;
     String senha = _controllerSenha.text;
 
     //validar campos
-    if (nome.isNotEmpty) {
+    if (name.isNotEmpty) {
       if (email.isNotEmpty && email.contains("@")) {
         if (senha.isNotEmpty && senha.length > 6) {
           User usuario = User();
-          usuario.nome = nome;
+          usuario.name = name;
           usuario.email = email;
           usuario.senha = senha;
-          usuario.tipoUser = usuario.verificaTipoUser(_tipoUser);
+          usuario.typeUser = usuario.verificaTipoUser(_typeUser);
 
           _cadastrarUser(usuario);
         } else {
@@ -64,8 +64,8 @@ class _CadastroState extends State<Cadastro> {
           .document(firebaseUser.user.uid)
           .setData(usuario.toMap());
 
-      //redireciona para o painel, de acordo com o tipoUser
-      switch (usuario.tipoUser) {
+      //redireciona para o painel, de acordo com o typeUser
+      switch (usuario.typeUser) {
         case "motorista":
           Navigator.pushNamedAndRemoveUntil(
               context, "/painel-motorista", (_) => false);
@@ -173,10 +173,10 @@ class _CadastroState extends State<Cadastro> {
 
                           inactiveThumbColor: Colors.black,
                           inactiveTrackColor: Colors.grey[900].withOpacity(0.8),
-                          value: _tipoUser,
+                          value: _typeUser,
                           onChanged: (bool valor) {
                             setState(() {
-                              _tipoUser = valor;
+                              _typeUser = valor;
                             });
                           }),
                       Text(

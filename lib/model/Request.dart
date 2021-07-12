@@ -18,9 +18,9 @@ class Request {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> dadosPassageiro = {
-      "nome": this.passageiro.nome,
+      "name": this.passageiro.name,
       "email": this.passageiro.email,
-      "tipoUser": this.passageiro.tipoUser,
+      "typeUser": this.passageiro.typeUser,
       "idUser": this.passageiro.idUser,
       "latitude": this.passageiro.latitude,
       "longitude": this.passageiro.longitude,

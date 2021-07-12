@@ -64,13 +64,13 @@ class _HomeState extends State<Home> {
         await db.collection("users").document(idUser).get();
 
     Map<String, dynamic> dados = snapshot.data;
-    String tipoUser = dados["tipoUser"];
+    String typeUser = dados["typeUser"];
 
     setState(() {
       _carregando = false;
     });
 
-    switch (tipoUser) {
+    switch (typeUser) {
       case "motorista":
         Navigator.pushReplacementNamed(context, "/painel-motorista");
         break;
