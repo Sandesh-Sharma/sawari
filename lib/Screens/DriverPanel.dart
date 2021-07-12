@@ -6,12 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uber/util/RequestStatus.dart';
 import 'package:uber/util/UserFirebase.dart';
 
-class PainelDriver extends StatefulWidget {
+class PanelDriver extends StatefulWidget {
   @override
-  _PainelDriverState createState() => _PainelDriverState();
+  _PanelDriverState createState() => _PanelDriverState();
 }
 
-class _PainelDriverState extends State<PainelDriver> {
+class _PanelDriverState extends State<PanelDriver> {
   List<String> itensMenu = ["Logout"];
   final _controller = StreamController<QuerySnapshot>.broadcast();
   Firestore db = Firestore.instance;

@@ -15,9 +15,9 @@ class Rotas {
       case "/cadastro":
         return MaterialPageRoute(builder: (_) => Cadastro());
       case "/painel-motorista":
-        return MaterialPageRoute(builder: (_) => PainelDriver());
+        return MaterialPageRoute(builder: (_) => PanelDriver());
       case "/painel-passageiro":
-        return MaterialPageRoute(builder: (_) => PainelPassenger());
+        return MaterialPageRoute(builder: (_) => PanelPassenger());
       case "/corrida":
         return MaterialPageRoute(builder: (_) => Corrida(args));
       default:

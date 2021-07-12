@@ -467,8 +467,8 @@ class _CorridaState extends State<Corrida> {
     return Scaffold(
       appBar: AppBar(
         title: _mensagemStatus == ""
-            ? Text("Painel corrida")
-            : Text("Painel corrida - " + _mensagemStatus),
+            ? Text("Panel corrida")
+            : Text("Panel corrida - " + _mensagemStatus),
       ),
       body: Container(
         child: Stack(

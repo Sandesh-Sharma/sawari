@@ -14,12 +14,12 @@ import 'package:uber/model/User.dart';
 import 'package:uber/util/RequestStatus.dart';
 import 'package:uber/util/UserFirebase.dart';
 
-class PainelPassenger extends StatefulWidget {
+class PanelPassenger extends StatefulWidget {
   @override
-  _PainelPassengerState createState() => _PainelPassengerState();
+  _PanelPassengerState createState() => _PanelPassengerState();
 }
 
-class _PainelPassengerState extends State<PainelPassenger> {
+class _PanelPassengerState extends State<PanelPassenger> {
   TextEditingController _controllerDestination = TextEditingController();
   List<String> itensMenu = ["Logout"];
   Completer<GoogleMapController> _controller = Completer();
@@ -600,7 +600,7 @@ class _PainelPassengerState extends State<PainelPassenger> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Painel passageiro"),
+        title: Text("Panel passageiro"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: _escolhaMenuItem,

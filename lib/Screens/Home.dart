@@ -50,14 +50,14 @@ class _HomeState extends State<Home> {
         .signInWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      _redirecionaPainelPorTipoUser(firebaseUser.user.uid);
+      _redirecionaPanelPorTipoUser(firebaseUser.user.uid);
     }).catchError((error) {
       _mensagemErro =
           "Erro ao autenticar usuário, verifique e-mail e senha e tente novamente!";
     });
   }
 
-  _redirecionaPainelPorTipoUser(String idUser) async {
+  _redirecionaPanelPorTipoUser(String idUser) async {
     Firestore db = Firestore.instance;
 
     DocumentSnapshot snapshot =
@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
     FirebaseUser usuarioLogado = await auth.currentUser();
     if (usuarioLogado != null) {
       String idUser = usuarioLogado.uid;
-      _redirecionaPainelPorTipoUser(idUser);
+      _redirecionaPanelPorTipoUser(idUser);
     }
   }
 
