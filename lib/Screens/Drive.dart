@@ -12,16 +12,16 @@ import 'package:uber/model/User.dart';
 import 'package:uber/util/RequestStatus.dart';
 import 'package:uber/util/UserFirebase.dart';
 
-class Corrida extends StatefulWidget {
+class Drive extends StatefulWidget {
   String idRequest;
 
-  Corrida(this.idRequest);
+  Drive(this.idRequest);
 
   @override
-  _CorridaState createState() => _CorridaState();
+  _DriveState createState() => _DriveState();
 }
 
-class _CorridaState extends State<Corrida> {
+class _DriveState extends State<Drive> {
   Completer<GoogleMapController> _controller = Completer();
   CameraPosition _posicaoCamera =
       CameraPosition(target: LatLng(-23.563999, -46.653256));
@@ -150,7 +150,7 @@ class _CorridaState extends State<Corrida> {
     });
   }
 
-  _aceitarCorrida() async {
+  _aceitarDrive() async {
     //Recuperar dados do driver
     User driver = await UserFirebase.getDadosUserLogado();
     driver.latitude = _localDriver.latitude;
@@ -181,7 +181,7 @@ class _CorridaState extends State<Corrida> {
 
   _statusAguardando() {
     _alterarBotaoPrincipal("Accept travel", Color(0xff1ebbd8), () {
-      _aceitarCorrida();
+      _aceitarDrive();
     });
 
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];
@@ -206,7 +206,7 @@ class _CorridaState extends State<Corrida> {
   _statusACaminho() {
     _mensagemStatus = "A caminho do passenger";
     _alterarBotaoPrincipal("Iniciar travel", Color(0xff1ebbd8), () {
-      _iniciarCorrida();
+      _iniciarDrive();
     });
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];
     double longitudeDestination = _dadosRequest["passenger"]["longitude"];
@@ -227,7 +227,7 @@ class _CorridaState extends State<Corrida> {
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
 
-  _finalizarCorrida() {
+  _finalizarDrive() {
     Firestore db = Firestore.instance;
     db
         .collection("requests")
@@ -274,7 +274,7 @@ class _CorridaState extends State<Corrida> {
     _mensagemStatus = "Viagem finished";
     _alterarBotaoPrincipal(
         "Confirm - R\$ ${valorViagemFormatado}", Color(0xff1ebbd8), () {
-      _confirmarCorrida();
+      _confirmarDrive();
     });
 
     _marcadores = {};
@@ -292,7 +292,7 @@ class _CorridaState extends State<Corrida> {
     Navigator.pushReplacementNamed(context, "/painel-driver");
   }
 
-  _confirmarCorrida() {
+  _confirmarDrive() {
     Firestore db = Firestore.instance;
     db
         .collection("requests")
@@ -309,7 +309,7 @@ class _CorridaState extends State<Corrida> {
   _statusEmViagem() {
     _mensagemStatus = "Em travel";
     _alterarBotaoPrincipal("Finalizar travel", Color(0xff1ebbd8), () {
-      _finalizarCorrida();
+      _finalizarDrive();
     });
 
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
@@ -367,7 +367,7 @@ class _CorridaState extends State<Corrida> {
         ));
   }
 
-  _iniciarCorrida() {
+  _iniciarDrive() {
     Firestore db = Firestore.instance;
     db.collection("requests").document(_idRequest).updateData({
       "origem": {

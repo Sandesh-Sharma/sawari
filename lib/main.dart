@@ -14,7 +14,7 @@ void main() => runApp(
         home: Home(),
         theme: temaPadrao,
         initialRoute: "/",
-        onGenerateRoute: Rotas.gerarRotas,
+        onGenerateRoute: Routes.gerarRoutes,
         debugShowCheckedModeBanner: false,
       ),
     );

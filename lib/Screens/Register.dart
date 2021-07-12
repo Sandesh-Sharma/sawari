@@ -3,12 +3,12 @@ import 'package:uber/model/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Cadastro extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _CadastroState createState() => _CadastroState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _CadastroState extends State<Cadastro> {
+class _RegisterState extends State<Register> {
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
@@ -85,7 +85,7 @@ class _CadastroState extends State<Cadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cadastro"),
+        title: Text("Register"),
       ),
       body: Container(
         decoration: BoxDecoration(

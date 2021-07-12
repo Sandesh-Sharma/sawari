@@ -5,21 +5,21 @@ import 'package:uber/screens/Home.dart';
 import 'package:uber/screens/DriverPanel.dart';
 import 'package:uber/screens/PassengerPanel.dart';
 
-class Rotas {
-  static Route<dynamic> gerarRotas(RouteSettings settings) {
+class Routes {
+  static Route<dynamic> gerarRoutes(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(builder: (_) => Home());
       case "/cadastro":
-        return MaterialPageRoute(builder: (_) => Cadastro());
+        return MaterialPageRoute(builder: (_) => Register());
       case "/painel-driver":
         return MaterialPageRoute(builder: (_) => PanelDriver());
       case "/painel-passenger":
         return MaterialPageRoute(builder: (_) => PanelPassenger());
       case "/travel":
-        return MaterialPageRoute(builder: (_) => Corrida(args));
+        return MaterialPageRoute(builder: (_) => Drive(args));
       default:
         _erroRota();
     }
