@@ -169,10 +169,9 @@ class _RegisterState extends State<Register> {
                       ),
                       Switch(
                           activeColor: Color(0xff1ebbd8),
-                          //activeTrackColor: Color(0xff1ebbd8),
-
+                          activeTrackColor: Colors.grey.withOpacity(0.8),
                           inactiveThumbColor: Color(0xff1ebbd8),
-                          inactiveTrackColor: Colors.grey[900].withOpacity(0.8),
+                          inactiveTrackColor: Colors.grey.withOpacity(0.8),
                           value: _typeUser,
                           onChanged: (bool valor) {
                             setState(() {

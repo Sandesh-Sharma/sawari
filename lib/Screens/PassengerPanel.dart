@@ -436,7 +436,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
     var valorTravelFormatado = f.format(valorTravel);
 
     _alterarBotaoPrincipal(
-        "Total - रु ${valorTravelFormatado}", Colors.green, () {});
+        "Total - रु $valorTravelFormatado", Colors.green, () {});
 
     _marcadores = {};
     Position position = Position(

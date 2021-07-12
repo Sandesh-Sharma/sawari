@@ -261,19 +261,19 @@ class _DriveState extends State<Drive> {
         latitudeDestination,
         longitudeDestination);
 
-    //Converte para KM
-    double distanciaKm = distanciaEmMetros / 100000;
+    //Convert to Km
+    double distanciaKm = distanciaEmMetros / 1000;
 
-    //8 é o valor cobrado por KM
+    //Rs 5 per Kilometer
     double valorTravel = distanciaKm * 5;
 
-    //Formatar valor travel
-    var f = new NumberFormat("#,##0.00", "pt_BR");
+    //Format number
+    var f = new NumberFormat("###.0#", "en_US");
     var valorTravelFormatado = f.format(valorTravel);
 
     _mensagemStatus = "Travel finished";
     _alterarBotaoPrincipal(
-        "Confirm - रु ${valorTravelFormatado}", Color(0xff1ebbd8), () {
+        "Confirm - रु $valorTravelFormatado", Color(0xff1ebbd8), () {
       _confirmarDrive();
     });
 

@@ -28,7 +28,7 @@ class _PanelDriverState extends State<PanelDriver> {
       case "Logout":
         _deslogarUser();
         break;
-      case "Configurações":
+      case "Settings":
         break;
     }
   }
@@ -102,7 +102,7 @@ class _PanelDriverState extends State<PanelDriver> {
                         height: 45,
                       ),
                       Text(
-                        "UBER",
+                        "SAWARI",
                         style: TextStyle(
                           fontSize: 30,
                           color: Colors.black,
@@ -115,7 +115,7 @@ class _PanelDriverState extends State<PanelDriver> {
                     height: 8,
                   ),
                   Text(
-                    "Carregando requisições",
+                    "Loading Requests",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
@@ -171,7 +171,7 @@ class _PanelDriverState extends State<PanelDriver> {
                         height: 45,
                       ),
                       Text(
-                        "UBER",
+                        "SAWARI",
                         style: TextStyle(
                           fontSize: 30,
                           color: Colors.black,
@@ -247,7 +247,7 @@ class _PanelDriverState extends State<PanelDriver> {
                 case ConnectionState.active:
                 case ConnectionState.done:
                   if (snapshot.hasError) {
-                    return Text("Erro ao carregar os dados!");
+                    return Text("Error Loading Data!");
                   } else {
                     QuerySnapshot querySnapshot = snapshot.data;
                     if (querySnapshot.documents.length == 0) {
