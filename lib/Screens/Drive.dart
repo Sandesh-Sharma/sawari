@@ -32,7 +32,7 @@ class _CorridaState extends State<Corrida> {
   String _statusRequest = StatusRequest.WAITING;
 
   //Controles para exibição na tela
-  String _textoBotao = "Aceitar travel";
+  String _textoBotao = "Accept travel";
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
   String _mensagemStatus = "";
@@ -180,7 +180,7 @@ class _CorridaState extends State<Corrida> {
   }
 
   _statusAguardando() {
-    _alterarBotaoPrincipal("Aceitar travel", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Accept travel", Color(0xff1ebbd8), () {
       _aceitarCorrida();
     });
 
@@ -273,7 +273,7 @@ class _CorridaState extends State<Corrida> {
 
     _mensagemStatus = "Viagem finished";
     _alterarBotaoPrincipal(
-        "Confirmar - R\$ ${valorViagemFormatado}", Color(0xff1ebbd8), () {
+        "Confirm - R\$ ${valorViagemFormatado}", Color(0xff1ebbd8), () {
       _confirmarCorrida();
     });
 

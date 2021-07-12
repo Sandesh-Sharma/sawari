@@ -33,7 +33,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
   //Controles para exibição na tela
   bool _exibirCaixaEnderecoDestination = true;
-  String _textoBotao = "Chamar uber";
+  String _textoBotao = "Call uber";
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
 
@@ -138,11 +138,11 @@ class _PanelPassengerState extends State<PanelPassenger> {
         destination.longitude = endereco.position.longitude;
 
         String enderecoConfirmacao;
-        enderecoConfirmacao = "\n Cidade: " + destination.cidade;
+        enderecoConfirmacao = "\n City: " + destination.cidade;
         enderecoConfirmacao +=
-            "\n Rua: " + destination.rua + ", " + destination.numero;
-        enderecoConfirmacao += "\n Bairro: " + destination.bairro;
-        enderecoConfirmacao += "\n Cep: " + destination.cep;
+            "\n Road: " + destination.rua + ", " + destination.numero;
+        enderecoConfirmacao += "\n Neighborhood: " + destination.bairro;
+        enderecoConfirmacao += "\n Zip: " + destination.cep;
 
         showDialog(
             context: context,
@@ -164,7 +164,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
                           ),
                           Center(
                             child: Text(
-                              "Confirmação",
+                              "Confirm",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black,
@@ -188,7 +188,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
                             children: <Widget>[
                               FlatButton(
                                 child: Text(
-                                  "Cancelar",
+                                  "Cancel",
                                   style: TextStyle(
                                     color: Color(0xff1ebbd8),
                                     fontSize: 16,
@@ -199,7 +199,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
                               ),
                               FlatButton(
                                 child: Text(
-                                  "Confirmar",
+                                  "Confirm",
                                   style: TextStyle(
                                     color: Color(0xff1ebbd8),
                                     fontWeight: FontWeight.bold,
@@ -296,7 +296,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   _statusUberNaoChamado() {
     _exibirCaixaEnderecoDestination = true;
 
-    _alterarBotaoPrincipal("Chamar uber", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Call uber", Color(0xff1ebbd8), () {
       _chamarUber();
     });
 
@@ -314,7 +314,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   _statusAguardando() {
     _exibirCaixaEnderecoDestination = false;
 
-    _alterarBotaoPrincipal("Cancelar", Colors.red, () {
+    _alterarBotaoPrincipal("Cancel", Colors.red, () {
       _cancelarUber();
     });
 
@@ -454,7 +454,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
       _streamSubscriptionRequisicoes.cancel();
 
     _exibirCaixaEnderecoDestination = true;
-    _alterarBotaoPrincipal("Chamar uber", Color(0xff1ebbd8), () {
+    _alterarBotaoPrincipal("Call uber", Color(0xff1ebbd8), () {
       _chamarUber();
     });
 
@@ -600,7 +600,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Panel passenger"),
+        title: Text("Passenger Panel"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: _escolhaMenuItem,
@@ -658,7 +658,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
                                 color: Colors.green,
                               ),
                             ),
-                            hintText: "Meu local",
+                            hintText: "My Location",
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.only(left: 15),
                           ),
@@ -691,7 +691,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
                                 color: Colors.black,
                               ),
                             ),
-                            hintText: "Digite o destination",
+                            hintText: "Enter a destination",
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.only(left: 15),
                           ),
