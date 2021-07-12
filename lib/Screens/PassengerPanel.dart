@@ -331,7 +331,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   _statusACaminho() {
     _exibirCaixaEnderecoDestination = false;
 
-    _alterarBotaoPrincipal("Driver a caminho", Colors.grey, () {});
+    _alterarBotaoPrincipal("Driver on the way", Colors.grey, () {});
 
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];
     double longitudeDestination = _dadosRequest["passenger"]["longitude"];
@@ -429,14 +429,14 @@ class _PanelPassengerState extends State<PanelPassenger> {
     double distanciaKm = distanciaEmMetros / 1000;
 
     //8 é o valor cobrado por KM
-    double valorTravel = distanciaKm * 8;
+    double valorTravel = distanciaKm * 5;
 
     //Formatar valor travel
-    var f = new NumberFormat("#,##0.00", "pt_BR");
+    var f = new NumberFormat("###.0#", "en_US");
     var valorTravelFormatado = f.format(valorTravel);
 
     _alterarBotaoPrincipal(
-        "Total - R\$ ${valorTravelFormatado}", Colors.green, () {});
+        "Total - रु ${valorTravelFormatado}", Colors.green, () {});
 
     _marcadores = {};
     Position position = Position(
