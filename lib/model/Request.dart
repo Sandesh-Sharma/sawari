@@ -5,8 +5,8 @@ import 'User.dart';
 class Request {
   String _id;
   String _status;
-  User _passageiro;
-  User _motorista;
+  User _passenger;
+  User _driver;
   Destination _destination;
 
   Request() {
@@ -18,12 +18,12 @@ class Request {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> dadosPassenger = {
-      "name": this.passageiro.name,
-      "email": this.passageiro.email,
-      "typeUser": this.passageiro.typeUser,
-      "idUser": this.passageiro.idUser,
-      "latitude": this.passageiro.latitude,
-      "longitude": this.passageiro.longitude,
+      "name": this.passenger.name,
+      "email": this.passenger.email,
+      "typeUser": this.passenger.typeUser,
+      "idUser": this.passenger.idUser,
+      "latitude": this.passenger.latitude,
+      "longitude": this.passenger.longitude,
     };
 
     Map<String, dynamic> dadosDestination = {
@@ -38,8 +38,8 @@ class Request {
     Map<String, dynamic> dadosRequest = {
       "id": this.id,
       "status": this.status,
-      "passageiro": dadosPassenger,
-      "motorista": null,
+      "passenger": dadosPassenger,
+      "driver": null,
       "destination": dadosDestination,
     };
 
@@ -52,16 +52,16 @@ class Request {
     _destination = value;
   }
 
-  User get motorista => _motorista;
+  User get driver => _driver;
 
-  set motorista(User value) {
-    _motorista = value;
+  set driver(User value) {
+    _driver = value;
   }
 
-  User get passageiro => _passageiro;
+  User get passenger => _passenger;
 
-  set passageiro(User value) {
-    _passageiro = value;
+  set passenger(User value) {
+    _passenger = value;
   }
 
   String get status => _status;

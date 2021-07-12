@@ -50,7 +50,7 @@ class _PanelDriverState extends State<PanelDriver> {
 
     //Recupera requisicao ativa
     DocumentSnapshot documentSnapshot = await db
-        .collection("active_request_motorista")
+        .collection("active_request_driver")
         .document(firebaseUser.uid)
         .get();
 
@@ -69,7 +69,7 @@ class _PanelDriverState extends State<PanelDriver> {
     super.initState();
 
     /*
-    Recupera requisicao ativa para verificar se motorista está
+    Recupera requisicao ativa para verificar se driver está
     atendendo alguma requisição e envia ele para tela de corrida
     */
     _recuperaRequestAtivaDriver();
@@ -265,7 +265,7 @@ class _PanelDriverState extends State<PanelDriver> {
                             DocumentSnapshot item = requests[indice];
 
                             String idRequest = item["id"];
-                            String namePassenger = item["passageiro"]["name"];
+                            String namePassenger = item["passenger"]["name"];
                             String rua = item["destination"]["rua"];
                             String numero = item["destination"]["numero"];
 

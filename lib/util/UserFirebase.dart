@@ -35,13 +35,13 @@ class UserFirebase {
       String idRequest, double lat, double lon) async {
     Firestore db = Firestore.instance;
 
-    User motorista = await getDadosUserLogado();
-    motorista.latitude = lat;
-    motorista.longitude = lon;
+    User driver = await getDadosUserLogado();
+    driver.latitude = lat;
+    driver.longitude = lon;
 
     db.collection("requests").document(idRequest).updateData(
       {
-        "motorista": motorista.toMap(),
+        "driver": driver.toMap(),
       },
     );
   }

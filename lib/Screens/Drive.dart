@@ -58,7 +58,7 @@ class _CorridaState extends State<Corrida> {
       if (position != null) {
         if (_idRequest != null && _idRequest.isNotEmpty) {
           if (_statusRequest != StatusRequest.WAITING) {
-            //Atualiza local do passageiro
+            //Atualiza local do passenger
             UserFirebase.atualizarDadosLocalizacao(
                 _idRequest, position.latitude, position.longitude);
           } else {
@@ -78,7 +78,7 @@ class _CorridaState extends State<Corrida> {
         .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
 
     if (position != null) {
-      //Atualizar localização em tempo real do motorista
+      //Atualizar localização em tempo real do driver
 
     }
   }
@@ -151,27 +151,27 @@ class _CorridaState extends State<Corrida> {
   }
 
   _aceitarCorrida() async {
-    //Recuperar dados do motorista
-    User motorista = await UserFirebase.getDadosUserLogado();
-    motorista.latitude = _localDriver.latitude;
-    motorista.longitude = _localDriver.longitude;
+    //Recuperar dados do driver
+    User driver = await UserFirebase.getDadosUserLogado();
+    driver.latitude = _localDriver.latitude;
+    driver.longitude = _localDriver.longitude;
 
     Firestore db = Firestore.instance;
     String idRequest = _dadosRequest["id"];
 
     db.collection("requests").document(idRequest).updateData({
-      "motorista": motorista.toMap(),
+      "driver": driver.toMap(),
       "status": StatusRequest.ON_MY_WAY,
     }).then((_) {
       //atualiza requisicao ativa
-      String idPassenger = _dadosRequest["passageiro"]["idUser"];
+      String idPassenger = _dadosRequest["passenger"]["idUser"];
       db.collection("active_request").document(idPassenger).updateData({
         "status": StatusRequest.ON_MY_WAY,
       });
 
-      //Salvar requisicao ativa para motorista
-      String idDriver = motorista.idUser;
-      db.collection("active_request_motorista").document(idDriver).setData({
+      //Salvar requisicao ativa para driver
+      String idDriver = driver.idUser;
+      db.collection("active_request_driver").document(idDriver).setData({
         "request_id": idRequest,
         "user_id": idDriver,
         "status": StatusRequest.ON_MY_WAY,
@@ -184,44 +184,44 @@ class _CorridaState extends State<Corrida> {
       _aceitarCorrida();
     });
 
-    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passenger"]["latitude"];
+    double longitudeDestination = _dadosRequest["passenger"]["longitude"];
 
-    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["driver"]["latitude"];
+    double longitudeOrigem = _dadosRequest["driver"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png",
-        "Local motorista");
+        "assets/images/driver.png",
+        "Local driver");
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
-        "assets/images/passageiro.png",
+        "assets/images/passenger.png",
         "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
 
   _statusACaminho() {
-    _mensagemStatus = "A caminho do passageiro";
+    _mensagemStatus = "A caminho do passenger";
     _alterarBotaoPrincipal("Iniciar corrida", Color(0xff1ebbd8), () {
       _iniciarCorrida();
     });
-    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passenger"]["latitude"];
+    double longitudeDestination = _dadosRequest["passenger"]["longitude"];
 
-    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["driver"]["latitude"];
+    double longitudeOrigem = _dadosRequest["driver"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png",
-        "Local motorista");
+        "assets/images/driver.png",
+        "Local driver");
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
-        "assets/images/passageiro.png",
+        "assets/images/passenger.png",
         "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
@@ -234,15 +234,15 @@ class _CorridaState extends State<Corrida> {
         .document(_idRequest)
         .updateData({"status": StatusRequest.FINISHED});
 
-    String idPassenger = _dadosRequest["passageiro"]["idUser"];
+    String idPassenger = _dadosRequest["passenger"]["idUser"];
     db
         .collection("active_request")
         .document(idPassenger)
         .updateData({"status": StatusRequest.FINISHED});
 
-    String idDriver = _dadosRequest["motorista"]["idUser"];
+    String idDriver = _dadosRequest["driver"]["idUser"];
     db
-        .collection("active_request_motorista")
+        .collection("active_request_driver")
         .document(idDriver)
         .updateData({"status": StatusRequest.FINISHED});
   }
@@ -289,7 +289,7 @@ class _CorridaState extends State<Corrida> {
   }
 
   _statusConfirmada() {
-    Navigator.pushReplacementNamed(context, "/painel-motorista");
+    Navigator.pushReplacementNamed(context, "/painel-driver");
   }
 
   _confirmarCorrida() {
@@ -299,11 +299,11 @@ class _CorridaState extends State<Corrida> {
         .document(_idRequest)
         .updateData({"status": StatusRequest.CONFIRMED});
 
-    String idPassenger = _dadosRequest["passageiro"]["idUser"];
+    String idPassenger = _dadosRequest["passenger"]["idUser"];
     db.collection("active_request").document(idPassenger).delete();
 
-    String idDriver = _dadosRequest["motorista"]["idUser"];
-    db.collection("active_request_motorista").document(idDriver).delete();
+    String idDriver = _dadosRequest["driver"]["idUser"];
+    db.collection("active_request_driver").document(idDriver).delete();
   }
 
   _statusEmViagem() {
@@ -315,13 +315,13 @@ class _CorridaState extends State<Corrida> {
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
     double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
-    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["driver"]["latitude"];
+    double longitudeOrigem = _dadosRequest["driver"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png",
-        "Local motorista");
+        "assets/images/driver.png",
+        "Local driver");
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
@@ -371,21 +371,21 @@ class _CorridaState extends State<Corrida> {
     Firestore db = Firestore.instance;
     db.collection("requests").document(_idRequest).updateData({
       "origem": {
-        "latitude": _dadosRequest["motorista"]["latitude"],
-        "longitude": _dadosRequest["motorista"]["longitude"]
+        "latitude": _dadosRequest["driver"]["latitude"],
+        "longitude": _dadosRequest["driver"]["longitude"]
       },
       "status": StatusRequest.TRAVEL
     });
 
-    String idPassenger = _dadosRequest["passageiro"]["idUser"];
+    String idPassenger = _dadosRequest["passenger"]["idUser"];
     db
         .collection("active_request")
         .document(idPassenger)
         .updateData({"status": StatusRequest.TRAVEL});
 
-    String idDriver = _dadosRequest["motorista"]["idUser"];
+    String idDriver = _dadosRequest["driver"]["idUser"];
     db
-        .collection("active_request_motorista")
+        .collection("active_request_driver")
         .document(idDriver)
         .updateData({"status": StatusRequest.TRAVEL});
   }

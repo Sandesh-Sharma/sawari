@@ -71,11 +71,11 @@ class _HomeState extends State<Home> {
     });
 
     switch (typeUser) {
-      case "motorista":
-        Navigator.pushReplacementNamed(context, "/painel-motorista");
+      case "driver":
+        Navigator.pushReplacementNamed(context, "/painel-driver");
         break;
-      case "passageiro":
-        Navigator.pushReplacementNamed(context, "/painel-passageiro");
+      case "passenger":
+        Navigator.pushReplacementNamed(context, "/painel-passenger");
         break;
     }
   }

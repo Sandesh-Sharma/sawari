@@ -66,13 +66,13 @@ class _CadastroState extends State<Cadastro> {
 
       //redireciona para o painel, de acordo com o typeUser
       switch (usuario.typeUser) {
-        case "motorista":
+        case "driver":
           Navigator.pushNamedAndRemoveUntil(
-              context, "/painel-motorista", (_) => false);
+              context, "/painel-driver", (_) => false);
           break;
-        case "passageiro":
+        case "passenger":
           Navigator.pushNamedAndRemoveUntil(
-              context, "/painel-passageiro", (_) => false);
+              context, "/painel-passenger", (_) => false);
           break;
       }
     }).catchError((error) {

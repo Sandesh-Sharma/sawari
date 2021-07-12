@@ -63,8 +63,8 @@ flutter:
     - assets/images/fundo.png
     - assets/images/logo.png
     - assets/images/icon.png
-    - assets/images/motorista.png
-    - assets/images/passageiro.png
+    - assets/images/driver.png
+    - assets/images/passenger.png
     - assets/images/destination.png
   #   - images/a_dot_ham.jpeg
 

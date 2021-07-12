@@ -30,7 +30,7 @@ class User {
   }
 
   String verificaTipoUser(bool typeUser) {
-    return typeUser ? "motorista" : "passageiro";
+    return typeUser ? "driver" : "passenger";
   }
 
   String get typeUser => _typeUser;

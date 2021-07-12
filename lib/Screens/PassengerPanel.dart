@@ -65,7 +65,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
     geolocator.getPositionStream(locationOptions).listen((Position position) {
       if (_idRequest != null && _idRequest.isNotEmpty) {
-        //Atualiza local do passageiro
+        //Atualiza local do passenger
         UserFirebase.atualizarDadosLocalizacao(
             _idRequest, position.latitude, position.longitude);
       } else {
@@ -104,10 +104,10 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: pixelRatio),
-            "assets/images/passageiro.png")
+            "assets/images/passenger.png")
         .then((BitmapDescriptor icone) {
       Marker marcadorPassenger = Marker(
-          markerId: MarkerId("marcador-passageiro"),
+          markerId: MarkerId("marcador-passenger"),
           position: LatLng(local.latitude, local.longitude),
           infoWindow: InfoWindow(title: "Meu local"),
           icon: icone);
@@ -245,19 +245,19 @@ class _PanelPassengerState extends State<PanelPassenger> {
     + requisicao
       + ID_REQUISICAO
         + destination(rua, endereco, latitude...)
-        + passageiro (name, email...)
-        + motorista (name, email..)
+        + passenger (name, email...)
+        + driver (name, email..)
         + status (waiting, on_my_way...finished)
 
     * */
 
-    User passageiro = await UserFirebase.getDadosUserLogado();
-    passageiro.latitude = _localPassenger.latitude;
-    passageiro.longitude = _localPassenger.longitude;
+    User passenger = await UserFirebase.getDadosUserLogado();
+    passenger.latitude = _localPassenger.latitude;
+    passenger.longitude = _localPassenger.longitude;
 
     Request requisicao = Request();
     requisicao.destination = destination;
-    requisicao.passageiro = passageiro;
+    requisicao.passenger = passenger;
     requisicao.status = StatusRequest.WAITING;
 
     Firestore db = Firestore.instance;
@@ -271,12 +271,12 @@ class _PanelPassengerState extends State<PanelPassenger> {
     //Salvar requisição ativa
     Map<String, dynamic> dadosRequestAtiva = {};
     dadosRequestAtiva["request_id"] = requisicao.id;
-    dadosRequestAtiva["user_id"] = passageiro.idUser;
+    dadosRequestAtiva["user_id"] = passenger.idUser;
     dadosRequestAtiva["status"] = StatusRequest.WAITING;
 
     db
         .collection("active_request")
-        .document(passageiro.idUser)
+        .document(passenger.idUser)
         .setData(dadosRequestAtiva);
 
     //Adicionar listener requisicao
@@ -318,10 +318,10 @@ class _PanelPassengerState extends State<PanelPassenger> {
       _cancelarUber();
     });
 
-    double passageiroLat = _dadosRequest["passageiro"]["latitude"];
-    double passageiroLon = _dadosRequest["passageiro"]["longitude"];
+    double passengerLat = _dadosRequest["passenger"]["latitude"];
+    double passengerLon = _dadosRequest["passenger"]["longitude"];
     Position position =
-        Position(latitude: passageiroLat, longitude: passageiroLon);
+        Position(latitude: passengerLat, longitude: passengerLon);
     _exibirHighlightPassenger(position);
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -333,20 +333,20 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
     _alterarBotaoPrincipal("Driver a caminho", Colors.grey, () {});
 
-    double latitudeDestination = _dadosRequest["passageiro"]["latitude"];
-    double longitudeDestination = _dadosRequest["passageiro"]["longitude"];
+    double latitudeDestination = _dadosRequest["passenger"]["latitude"];
+    double longitudeDestination = _dadosRequest["passenger"]["longitude"];
 
-    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["driver"]["latitude"];
+    double longitudeOrigem = _dadosRequest["driver"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png",
-        "Local motorista");
+        "assets/images/driver.png",
+        "Local driver");
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
-        "assets/images/passageiro.png",
+        "assets/images/passenger.png",
         "Local destination");
 
     _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
@@ -359,13 +359,13 @@ class _PanelPassengerState extends State<PanelPassenger> {
     double latitudeDestination = _dadosRequest["destination"]["latitude"];
     double longitudeDestination = _dadosRequest["destination"]["longitude"];
 
-    double latitudeOrigem = _dadosRequest["motorista"]["latitude"];
-    double longitudeOrigem = _dadosRequest["motorista"]["longitude"];
+    double latitudeOrigem = _dadosRequest["driver"]["latitude"];
+    double longitudeOrigem = _dadosRequest["driver"]["longitude"];
 
     Highlight marcadorOrigem = Highlight(
         LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png",
-        "Local motorista");
+        "assets/images/driver.png",
+        "Local driver");
 
     Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
@@ -600,7 +600,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Panel passageiro"),
+        title: Text("Panel passenger"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: _escolhaMenuItem,
