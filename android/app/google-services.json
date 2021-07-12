@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "146572296539",
+    "project_id": "sawariavishek",
+    "storage_bucket": "sawariavishek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146572296539:android:03010a873b1d1479ff1a7e",
+        "android_client_info": {
+          "package_name": "com.example.uber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146572296539-6948udl0j20n7lg584apcq7enensre69.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_ZusJqWfPo95--SY96IBHIjXlzkUyDT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146572296539-6948udl0j20n7lg584apcq7enensre69.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
