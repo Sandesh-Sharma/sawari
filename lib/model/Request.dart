@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Destino.dart';
-import 'Usuario.dart';
+import 'Destination.dart';
+import 'User.dart';
 
 class Requisicao {
   String _id;
   String _status;
-  Usuario _passageiro;
-  Usuario _motorista;
+  User _passageiro;
+  User _motorista;
   Destino _destino;
 
   Requisicao() {
@@ -20,8 +20,8 @@ class Requisicao {
     Map<String, dynamic> dadosPassageiro = {
       "nome": this.passageiro.nome,
       "email": this.passageiro.email,
-      "tipoUsuario": this.passageiro.tipoUsuario,
-      "idUsuario": this.passageiro.idUsuario,
+      "tipoUser": this.passageiro.tipoUser,
+      "idUser": this.passageiro.idUser,
       "latitude": this.passageiro.latitude,
       "longitude": this.passageiro.longitude,
     };
@@ -52,15 +52,15 @@ class Requisicao {
     _destino = value;
   }
 
-  Usuario get motorista => _motorista;
+  User get motorista => _motorista;
 
-  set motorista(Usuario value) {
+  set motorista(User value) {
     _motorista = value;
   }
 
-  Usuario get passageiro => _passageiro;
+  User get passageiro => _passageiro;
 
-  set passageiro(Usuario value) {
+  set passageiro(User value) {
     _passageiro = value;
   }
 

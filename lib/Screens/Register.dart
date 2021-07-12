@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber/model/Usuario.dart';
+import 'package:uber/model/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,7 +12,7 @@ class _CadastroState extends State<Cadastro> {
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  bool _tipoUsuario = false;
+  bool _tipoUser = false;
   String _mensagemErro = "";
 
   _validarCampos() {
@@ -25,13 +25,13 @@ class _CadastroState extends State<Cadastro> {
     if (nome.isNotEmpty) {
       if (email.isNotEmpty && email.contains("@")) {
         if (senha.isNotEmpty && senha.length > 6) {
-          Usuario usuario = Usuario();
+          User usuario = User();
           usuario.nome = nome;
           usuario.email = email;
           usuario.senha = senha;
-          usuario.tipoUsuario = usuario.verificaTipoUsuario(_tipoUsuario);
+          usuario.tipoUser = usuario.verificaTipoUser(_tipoUser);
 
-          _cadastrarUsuario(usuario);
+          _cadastrarUser(usuario);
         } else {
           setState(() {
             _mensagemErro = "Preencha a senha! digite mais de 6 caracteres";
@@ -49,7 +49,7 @@ class _CadastroState extends State<Cadastro> {
     }
   }
 
-  _cadastrarUsuario(Usuario usuario) {
+  _cadastrarUser(User usuario) {
     FirebaseAuth auth = FirebaseAuth.instance;
     Firestore db = Firestore.instance;
 
@@ -64,8 +64,8 @@ class _CadastroState extends State<Cadastro> {
           .document(firebaseUser.user.uid)
           .setData(usuario.toMap());
 
-      //redireciona para o painel, de acordo com o tipoUsuario
-      switch (usuario.tipoUsuario) {
+      //redireciona para o painel, de acordo com o tipoUser
+      switch (usuario.tipoUser) {
         case "motorista":
           Navigator.pushNamedAndRemoveUntil(
               context, "/painel-motorista", (_) => false);
@@ -173,10 +173,10 @@ class _CadastroState extends State<Cadastro> {
 
                           inactiveThumbColor: Colors.black,
                           inactiveTrackColor: Colors.grey[900].withOpacity(0.8),
-                          value: _tipoUsuario,
+                          value: _tipoUser,
                           onChanged: (bool valor) {
                             setState(() {
-                              _tipoUsuario = valor;
+                              _tipoUser = valor;
                             });
                           }),
                       Text(

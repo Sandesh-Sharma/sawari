@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber/model/Usuario.dart';
+import 'package:uber/model/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -22,11 +22,11 @@ class _HomeState extends State<Home> {
     //validar campos
     if (email.isNotEmpty && email.contains("@")) {
       if (senha.isNotEmpty && senha.length > 6) {
-        Usuario usuario = Usuario();
+        User usuario = User();
         usuario.email = email;
         usuario.senha = senha;
 
-        _logarUsuario(usuario);
+        _logarUser(usuario);
       } else {
         setState(() {
           _mensagemErro = "Preencha a senha! digite mais de 6 caracteres";
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _logarUsuario(Usuario usuario) {
+  _logarUser(User usuario) {
     setState(() {
       _carregando = true;
     });
@@ -50,27 +50,27 @@ class _HomeState extends State<Home> {
         .signInWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      _redirecionaPainelPorTipoUsuario(firebaseUser.user.uid);
+      _redirecionaPainelPorTipoUser(firebaseUser.user.uid);
     }).catchError((error) {
       _mensagemErro =
           "Erro ao autenticar usuário, verifique e-mail e senha e tente novamente!";
     });
   }
 
-  _redirecionaPainelPorTipoUsuario(String idUsuario) async {
+  _redirecionaPainelPorTipoUser(String idUser) async {
     Firestore db = Firestore.instance;
 
     DocumentSnapshot snapshot =
-        await db.collection("usuarios").document(idUsuario).get();
+        await db.collection("usuarios").document(idUser).get();
 
     Map<String, dynamic> dados = snapshot.data;
-    String tipoUsuario = dados["tipoUsuario"];
+    String tipoUser = dados["tipoUser"];
 
     setState(() {
       _carregando = false;
     });
 
-    switch (tipoUsuario) {
+    switch (tipoUser) {
       case "motorista":
         Navigator.pushReplacementNamed(context, "/painel-motorista");
         break;
@@ -80,20 +80,20 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _verificarUsuarioLogado() async {
+  _verificarUserLogado() async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     FirebaseUser usuarioLogado = await auth.currentUser();
     if (usuarioLogado != null) {
-      String idUsuario = usuarioLogado.uid;
-      _redirecionaPainelPorTipoUsuario(idUsuario);
+      String idUser = usuarioLogado.uid;
+      _redirecionaPainelPorTipoUser(idUser);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _verificarUsuarioLogado();
+    _verificarUserLogado();
   }
 
   @override

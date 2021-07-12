@@ -7,12 +7,12 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:uber/model/Destino.dart';
-import 'package:uber/model/Marcador.dart';
-import 'package:uber/model/Requisicao.dart';
-import 'package:uber/model/Usuario.dart';
-import 'package:uber/util/StatusRequisicao.dart';
-import 'package:uber/util/UsuarioFirebase.dart';
+import 'package:uber/model/Destination.dart';
+import 'package:uber/model/Highlighter.dart';
+import 'package:uber/model/Request.dart';
+import 'package:uber/model/User.dart';
+import 'package:uber/util/RequestStatus.dart';
+import 'package:uber/util/UserFirebase.dart';
 
 class PainelPassageiro extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   Color _corBotao = Color(0xff1ebbd8);
   Function _funcaoBotao;
 
-  _deslogarUsuario() async {
+  _deslogarUser() async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     await auth.signOut();
@@ -47,7 +47,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   _escolhaMenuItem(String escolha) {
     switch (escolha) {
       case "Deslogar":
-        _deslogarUsuario();
+        _deslogarUser();
         break;
       case "Configurações":
         break;
@@ -66,7 +66,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     geolocator.getPositionStream(locationOptions).listen((Position position) {
       if (_idRequisicao != null && _idRequisicao.isNotEmpty) {
         //Atualiza local do passageiro
-        UsuarioFirebase.atualizarDadosLocalizacao(
+        UserFirebase.atualizarDadosLocalizacao(
             _idRequisicao, position.latitude, position.longitude);
       } else {
         setState(() {
@@ -250,7 +250,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     * */
 
-    Usuario passageiro = await UsuarioFirebase.getDadosUsuarioLogado();
+    User passageiro = await UserFirebase.getDadosUserLogado();
     passageiro.latitude = _localPassageiro.latitude;
     passageiro.longitude = _localPassageiro.longitude;
 
@@ -270,12 +270,12 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     //Salvar requisição ativa
     Map<String, dynamic> dadosRequisicaoAtiva = {};
     dadosRequisicaoAtiva["id_requisicao"] = requisicao.id;
-    dadosRequisicaoAtiva["id_usuario"] = passageiro.idUsuario;
+    dadosRequisicaoAtiva["id_usuario"] = passageiro.idUser;
     dadosRequisicaoAtiva["status"] = StatusRequisicao.AGUARDANDO;
 
     db
         .collection("requisicao_ativa")
-        .document(passageiro.idUsuario)
+        .document(passageiro.idUser)
         .setData(dadosRequisicaoAtiva);
 
     //Adicionar listener requisicao
@@ -514,7 +514,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _cancelarUber() async {
-    FirebaseUser firebaseUser = await UsuarioFirebase.getUsuarioAtual();
+    FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
     Firestore db = Firestore.instance;
     db
@@ -526,7 +526,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   }
 
   _recuperaRequisicaoAtiva() async {
-    FirebaseUser firebaseUser = await UsuarioFirebase.getUsuarioAtual();
+    FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
     Firestore db = Firestore.instance;
     DocumentSnapshot documentSnapshot = await db
