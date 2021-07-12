@@ -12,7 +12,7 @@ class PainelMotorista extends StatefulWidget {
 }
 
 class _PainelMotoristaState extends State<PainelMotorista> {
-  List<String> itensMenu = ["Deslogar"];
+  List<String> itensMenu = ["Logout"];
   final _controller = StreamController<QuerySnapshot>.broadcast();
   Firestore db = Firestore.instance;
 
@@ -25,7 +25,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
 
   _escolhaMenuItem(String escolha) {
     switch (escolha) {
-      case "Deslogar":
+      case "Logout":
         _deslogarUser();
         break;
       case "Configurações":
@@ -216,7 +216,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Painel motorista"),
+        title: Text("Driver Panel"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: _escolhaMenuItem,

@@ -21,7 +21,7 @@ class PainelPassageiro extends StatefulWidget {
 
 class _PainelPassageiroState extends State<PainelPassageiro> {
   TextEditingController _controllerDestination = TextEditingController();
-  List<String> itensMenu = ["Deslogar"];
+  List<String> itensMenu = ["Logout"];
   Completer<GoogleMapController> _controller = Completer();
   CameraPosition _posicaoCamera =
       CameraPosition(target: LatLng(-23.563999, -46.653256));
@@ -46,7 +46,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
   _escolhaMenuItem(String escolha) {
     switch (escolha) {
-      case "Deslogar":
+      case "Logout":
         _deslogarUser();
         break;
       case "Configurações":
