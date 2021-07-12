@@ -1,9 +1,9 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Marcador {
+class Highlight {
   LatLng local;
   String caminhoImagem;
   String titulo;
 
-  Marcador(this.local, this.caminhoImagem, this.titulo);
+  Highlight(this.local, this.caminhoImagem, this.titulo);
 }

@@ -83,7 +83,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     setState(() {
       if (position != null) {
-        _exibirMarcadorPassageiro(position);
+        _exibirHighlightPassageiro(position);
 
         _posicaoCamera = CameraPosition(
             target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -99,7 +99,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-  _exibirMarcadorPassageiro(Position local) async {
+  _exibirHighlightPassageiro(Position local) async {
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     BitmapDescriptor.fromAssetImage(
@@ -303,7 +303,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
       Position position = Position(
           latitude: _localPassageiro.latitude,
           longitude: _localPassageiro.longitude);
-      _exibirMarcadorPassageiro(position);
+      _exibirHighlightPassageiro(position);
       CameraPosition cameraPosition = CameraPosition(
           target: LatLng(position.latitude, position.longitude), zoom: 19);
       _movimentarCamera(cameraPosition);
@@ -321,7 +321,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     double passageiroLon = _dadosRequisicao["passageiro"]["longitude"];
     Position position =
         Position(latitude: passageiroLat, longitude: passageiroLon);
-    _exibirMarcadorPassageiro(position);
+    _exibirHighlightPassageiro(position);
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
     _movimentarCamera(cameraPosition);
@@ -338,15 +338,17 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
 
-    Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png", "Local motorista");
+    Highlight marcadorOrigem = Highlight(
+        LatLng(latitudeOrigem, longitudeOrigem),
+        "assets/images/motorista.png",
+        "Local motorista");
 
-    Marcador marcadorDestination = Marcador(
+    Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
         "assets/images/passageiro.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
+    _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
 
   _statusEmViagem() {
@@ -359,19 +361,21 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     double latitudeOrigem = _dadosRequisicao["motorista"]["latitude"];
     double longitudeOrigem = _dadosRequisicao["motorista"]["longitude"];
 
-    Marcador marcadorOrigem = Marcador(LatLng(latitudeOrigem, longitudeOrigem),
-        "assets/images/motorista.png", "Local motorista");
+    Highlight marcadorOrigem = Highlight(
+        LatLng(latitudeOrigem, longitudeOrigem),
+        "assets/images/motorista.png",
+        "Local motorista");
 
-    Marcador marcadorDestination = Marcador(
+    Highlight marcadorDestination = Highlight(
         LatLng(latitudeDestination, longitudeDestination),
         "assets/images/destino.png",
         "Local destino");
 
-    _exibirCentralizarDoisMarcadores(marcadorOrigem, marcadorDestination);
+    _exibirCentralizarDoisHighlightes(marcadorOrigem, marcadorDestination);
   }
 
-  _exibirCentralizarDoisMarcadores(
-      Marcador marcadorOrigem, Marcador marcadorDestination) {
+  _exibirCentralizarDoisHighlightes(
+      Highlight marcadorOrigem, Highlight marcadorDestination) {
     double latitudeOrigem = marcadorOrigem.local.latitude;
     double longitudeOrigem = marcadorOrigem.local.longitude;
 
@@ -379,7 +383,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     double longitudeDestination = marcadorDestination.local.longitude;
 
     //Exibir dois marcadores
-    _exibirDoisMarcadores(marcadorOrigem, marcadorDestination);
+    _exibirDoisHighlightes(marcadorOrigem, marcadorDestination);
 
     //'southwest.latitude <= northeast.latitude': is not true
     var nLat, nLon, sLat, sLon;
@@ -436,7 +440,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     _marcadores = {};
     Position position = Position(
         latitude: latitudeDestination, longitude: longitudeDestination);
-    _exibirMarcador(position, "assets/images/destino.png", "Destination");
+    _exibirHighlight(position, "assets/images/destino.png", "Destination");
 
     CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 19);
@@ -456,7 +460,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     _dadosRequisicao = {};
   }
 
-  _exibirMarcador(Position local, String icone, String infoWindow) async {
+  _exibirHighlight(Position local, String icone, String infoWindow) async {
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     BitmapDescriptor.fromAssetImage(
@@ -480,13 +484,14 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 100));
   }
 
-  _exibirDoisMarcadores(Marcador marcadorOrigem, Marcador marcadorDestination) {
+  _exibirDoisHighlightes(
+      Highlight marcadorOrigem, Highlight marcadorDestination) {
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     LatLng latLngOrigem = marcadorOrigem.local;
     LatLng latLngDestination = marcadorDestination.local;
 
-    Set<Marker> _listaMarcadores = {};
+    Set<Marker> _listaHighlightes = {};
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: pixelRatio),
             marcadorOrigem.caminhoImagem)
@@ -496,7 +501,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
           position: LatLng(latLngOrigem.latitude, latLngOrigem.longitude),
           infoWindow: InfoWindow(title: marcadorOrigem.titulo),
           icon: icone);
-      _listaMarcadores.add(mOrigem);
+      _listaHighlightes.add(mOrigem);
     });
 
     BitmapDescriptor.fromAssetImage(
@@ -509,11 +514,11 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
               LatLng(latLngDestination.latitude, latLngDestination.longitude),
           infoWindow: InfoWindow(title: marcadorDestination.titulo),
           icon: icone);
-      _listaMarcadores.add(mDestination);
+      _listaHighlightes.add(mDestination);
     });
 
     setState(() {
-      _marcadores = _listaMarcadores;
+      _marcadores = _listaHighlightes;
     });
   }
 
