@@ -11,7 +11,7 @@ class Cadastro extends StatefulWidget {
 class _CadastroState extends State<Cadastro> {
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerSenha = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
   bool _typeUser = false;
   String _mensagemErro = "";
 
@@ -19,7 +19,7 @@ class _CadastroState extends State<Cadastro> {
     //Recuperar dados dos campos
     String name = _controllerNome.text;
     String email = _controllerEmail.text;
-    String senha = _controllerSenha.text;
+    String senha = _controllerPassword.text;
 
     //validar campos
     if (name.isNotEmpty) {
@@ -141,13 +141,13 @@ class _CadastroState extends State<Cadastro> {
                   borderRadius: BorderRadius.circular(6),
                   elevation: 30.0,
                   child: TextField(
-                    controller: _controllerSenha,
+                    controller: _controllerPassword,
                     obscureText: true,
                     keyboardType: TextInputType.emailAddress,
                     style: TextStyle(fontSize: 20),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                        hintText: "Senha",
+                        hintText: "Password",
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(

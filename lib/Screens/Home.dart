@@ -10,14 +10,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerSenha = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
   String _mensagemErro = "";
   bool _carregando = false;
 
   _validarCampos() {
     //Recuperar dados dos campos
     String email = _controllerEmail.text;
-    String senha = _controllerSenha.text;
+    String senha = _controllerPassword.text;
 
     //validar campos
     if (email.isNotEmpty && email.contains("@")) {
@@ -163,13 +163,13 @@ class _HomeState extends State<Home> {
                       elevation: 30.0,
                       shadowColor: Colors.black,
                       child: TextField(
-                        controller: _controllerSenha,
+                        controller: _controllerPassword,
                         obscureText: true,
                         keyboardType: TextInputType.emailAddress,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Senha",
+                          hintText: "Password",
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -186,7 +186,7 @@ class _HomeState extends State<Home> {
                         shadowColor: Colors.black,
                         child: RaisedButton(
                             child: Text(
-                              "Entrar",
+                              "Login",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -208,7 +208,7 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                "Não tem conta? cadastre-se!",
+                                "No Account? Register Now!",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
