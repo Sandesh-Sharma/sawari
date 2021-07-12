@@ -35,7 +35,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
 
   Stream<QuerySnapshot> _adicionarListenerRequisicoes() {
     final stream = db
-        .collection("requisicoes")
+        .collection("requests")
         .where("status", isEqualTo: StatusRequest.AGUARDANDO)
         .snapshots();
 
@@ -50,7 +50,7 @@ class _PainelMotoristaState extends State<PainelMotorista> {
 
     //Recupera requisicao ativa
     DocumentSnapshot documentSnapshot = await db
-        .collection("requisicao_ativa_motorista")
+        .collection("active_request_motorista")
         .document(firebaseUser.uid)
         .get();
 
@@ -260,9 +260,9 @@ class _PainelMotoristaState extends State<PainelMotorista> {
                                 //color: Colors.grey,
                               ),
                           itemBuilder: (context, indice) {
-                            List<DocumentSnapshot> requisicoes =
+                            List<DocumentSnapshot> requests =
                                 querySnapshot.documents.toList();
-                            DocumentSnapshot item = requisicoes[indice];
+                            DocumentSnapshot item = requests[indice];
 
                             String idRequest = item["id"];
                             String nomePassageiro = item["passageiro"]["nome"];

@@ -12,7 +12,7 @@ class Request {
   Request() {
     Firestore db = Firestore.instance;
 
-    DocumentReference ref = db.collection("requisicoes").document();
+    DocumentReference ref = db.collection("requests").document();
     this.id = ref.documentID;
   }
 

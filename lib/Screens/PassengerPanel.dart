@@ -263,7 +263,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     //salvar requisição
     db
-        .collection("requisicoes")
+        .collection("requests")
         .document(requisicao.id)
         .setData(requisicao.toMap());
 
@@ -274,7 +274,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     dadosRequestAtiva["status"] = StatusRequest.AGUARDANDO;
 
     db
-        .collection("requisicao_ativa")
+        .collection("active_request")
         .document(passageiro.idUser)
         .setData(dadosRequestAtiva);
 
@@ -527,10 +527,10 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
 
     Firestore db = Firestore.instance;
     db
-        .collection("requisicoes")
+        .collection("requests")
         .document(_idRequest)
         .updateData({"status": StatusRequest.CANCELADA}).then((_) {
-      db.collection("requisicao_ativa").document(firebaseUser.uid).delete();
+      db.collection("active_request").document(firebaseUser.uid).delete();
     });
   }
 
@@ -538,10 +538,8 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
     FirebaseUser firebaseUser = await UserFirebase.getUserAtual();
 
     Firestore db = Firestore.instance;
-    DocumentSnapshot documentSnapshot = await db
-        .collection("requisicao_ativa")
-        .document(firebaseUser.uid)
-        .get();
+    DocumentSnapshot documentSnapshot =
+        await db.collection("active_request").document(firebaseUser.uid).get();
 
     if (documentSnapshot.data != null) {
       Map<String, dynamic> dados = documentSnapshot.data;
@@ -555,7 +553,7 @@ class _PainelPassageiroState extends State<PainelPassageiro> {
   _adicionarListenerRequest(String idRequest) async {
     Firestore db = Firestore.instance;
     _streamSubscriptionRequisicoes = await db
-        .collection("requisicoes")
+        .collection("requests")
         .document(idRequest)
         .snapshots()
         .listen((snapshot) {

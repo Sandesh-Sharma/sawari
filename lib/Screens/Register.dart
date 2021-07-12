@@ -60,7 +60,7 @@ class _CadastroState extends State<Cadastro> {
     )
         .then((firebaseUser) {
       db
-          .collection("usuarios")
+          .collection("users")
           .document(firebaseUser.user.uid)
           .setData(usuario.toMap());
 

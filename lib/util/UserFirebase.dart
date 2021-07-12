@@ -15,7 +15,7 @@ class UserFirebase {
     Firestore db = Firestore.instance;
 
     DocumentSnapshot snapshot =
-        await db.collection("usuarios").document(idUser).get();
+        await db.collection("users").document(idUser).get();
 
     Map<String, dynamic> dados = snapshot.data;
     String tipoUser = dados["tipoUser"];
@@ -39,7 +39,7 @@ class UserFirebase {
     motorista.latitude = lat;
     motorista.longitude = lon;
 
-    db.collection("requisicoes").document(idRequest).updateData(
+    db.collection("requests").document(idRequest).updateData(
       {
         "motorista": motorista.toMap(),
       },

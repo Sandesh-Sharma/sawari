@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
     Firestore db = Firestore.instance;
 
     DocumentSnapshot snapshot =
-        await db.collection("usuarios").document(idUser).get();
+        await db.collection("users").document(idUser).get();
 
     Map<String, dynamic> dados = snapshot.data;
     String tipoUser = dados["tipoUser"];

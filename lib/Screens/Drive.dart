@@ -112,14 +112,14 @@ class _CorridaState extends State<Corrida> {
 
     Firestore db = Firestore.instance;
     DocumentSnapshot documentSnapshot =
-        await db.collection("requisicoes").document(idRequest).get();
+        await db.collection("requests").document(idRequest).get();
   }
 
   _adicionarListenerRequest() async {
     Firestore db = Firestore.instance;
 
     await db
-        .collection("requisicoes")
+        .collection("requests")
         .document(_idRequest)
         .snapshots()
         .listen((snapshot) {
@@ -159,22 +159,19 @@ class _CorridaState extends State<Corrida> {
     Firestore db = Firestore.instance;
     String idRequest = _dadosRequest["id"];
 
-    db.collection("requisicoes").document(idRequest).updateData({
+    db.collection("requests").document(idRequest).updateData({
       "motorista": motorista.toMap(),
       "status": StatusRequest.A_CAMINHO,
     }).then((_) {
       //atualiza requisicao ativa
       String idPassageiro = _dadosRequest["passageiro"]["idUser"];
-      db.collection("requisicao_ativa").document(idPassageiro).updateData({
+      db.collection("active_request").document(idPassageiro).updateData({
         "status": StatusRequest.A_CAMINHO,
       });
 
       //Salvar requisicao ativa para motorista
       String idMotorista = motorista.idUser;
-      db
-          .collection("requisicao_ativa_motorista")
-          .document(idMotorista)
-          .setData({
+      db.collection("active_request_motorista").document(idMotorista).setData({
         "id_requisicao": idRequest,
         "id_usuario": idMotorista,
         "status": StatusRequest.A_CAMINHO,
@@ -233,19 +230,19 @@ class _CorridaState extends State<Corrida> {
   _finalizarCorrida() {
     Firestore db = Firestore.instance;
     db
-        .collection("requisicoes")
+        .collection("requests")
         .document(_idRequest)
         .updateData({"status": StatusRequest.FINALIZADA});
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
-        .collection("requisicao_ativa")
+        .collection("active_request")
         .document(idPassageiro)
         .updateData({"status": StatusRequest.FINALIZADA});
 
     String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
-        .collection("requisicao_ativa_motorista")
+        .collection("active_request_motorista")
         .document(idMotorista)
         .updateData({"status": StatusRequest.FINALIZADA});
   }
@@ -298,15 +295,15 @@ class _CorridaState extends State<Corrida> {
   _confirmarCorrida() {
     Firestore db = Firestore.instance;
     db
-        .collection("requisicoes")
+        .collection("requests")
         .document(_idRequest)
         .updateData({"status": StatusRequest.CONFIRMADA});
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
-    db.collection("requisicao_ativa").document(idPassageiro).delete();
+    db.collection("active_request").document(idPassageiro).delete();
 
     String idMotorista = _dadosRequest["motorista"]["idUser"];
-    db.collection("requisicao_ativa_motorista").document(idMotorista).delete();
+    db.collection("active_request_motorista").document(idMotorista).delete();
   }
 
   _statusEmViagem() {
@@ -372,7 +369,7 @@ class _CorridaState extends State<Corrida> {
 
   _iniciarCorrida() {
     Firestore db = Firestore.instance;
-    db.collection("requisicoes").document(_idRequest).updateData({
+    db.collection("requests").document(_idRequest).updateData({
       "origem": {
         "latitude": _dadosRequest["motorista"]["latitude"],
         "longitude": _dadosRequest["motorista"]["longitude"]
@@ -382,13 +379,13 @@ class _CorridaState extends State<Corrida> {
 
     String idPassageiro = _dadosRequest["passageiro"]["idUser"];
     db
-        .collection("requisicao_ativa")
+        .collection("active_request")
         .document(idPassageiro)
         .updateData({"status": StatusRequest.VIAGEM});
 
     String idMotorista = _dadosRequest["motorista"]["idUser"];
     db
-        .collection("requisicao_ativa_motorista")
+        .collection("active_request_motorista")
         .document(idMotorista)
         .updateData({"status": StatusRequest.VIAGEM});
   }
