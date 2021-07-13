@@ -79,7 +79,14 @@ class _DriveState extends State<Drive> {
 
     if (position != null) {
       //Atualizar localização em tempo real do driver
+      if (position != null) {
+        // _exibirHighlightPassenger(position);
 
+        _posicaoCamera = CameraPosition(
+            target: LatLng(position.latitude, position.longitude), zoom: 19);
+        _localDriver = position;
+        _movimentarCamera(_posicaoCamera);
+      }
     }
   }
 
@@ -447,6 +454,10 @@ class _DriveState extends State<Drive> {
 
     //_recuperaUltimaLocalizacaoConhecida();
     _adicionarListenerLocalizacao();
+
+    //solves the problem?
+
+    _recuperaUltimaLocalizacaoConhecida();
   }
 
   _escolhaMenuItem(String escolha) {
