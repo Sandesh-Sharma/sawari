@@ -42,6 +42,8 @@ class _PanelDriverState extends State<PanelDriver> {
     stream.listen((dados) {
       _controller.add(dados);
     });
+
+    return stream;
   }
 
   _recuperaRequestAtivaDriver() async {
@@ -313,6 +315,9 @@ class _PanelDriverState extends State<PanelDriver> {
 
                   break;
               }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }),
       ),
     );
