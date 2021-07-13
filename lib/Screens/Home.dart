@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
+                      color: Colors.blueGrey,
                     ),
                     height: 140,
                     width: 130,
