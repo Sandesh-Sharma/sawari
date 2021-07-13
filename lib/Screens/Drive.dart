@@ -490,8 +490,8 @@ class _DriveState extends State<Drive> {
               mapType: MapType.normal,
               initialCameraPosition: _posicaoCamera,
               onMapCreated: _onMapCreated,
-              //myLocationEnabled: true,
-              myLocationButtonEnabled: false,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
               markers: _marcadores,
               zoomControlsEnabled: false,
               //-23,559200, -46,658878

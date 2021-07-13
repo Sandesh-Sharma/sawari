@@ -453,12 +453,16 @@ class _PanelPassengerState extends State<PanelPassenger> {
     if (_streamSubscriptionRequisicoes != null)
       _streamSubscriptionRequisicoes.cancel();
 
-    _exibirCaixaEnderecoDestination = true;
-    _alterarBotaoPrincipal("Call sawari", Color(0xff1ebbd8), () {
-      _chamarUber();
-    });
+    Navigator.pushReplacementNamed(context, "/painel-passenger");
 
-    _dadosRequest = {};
+    // _exibirCaixaEnderecoDestination = true;
+    // _alterarBotaoPrincipal("Call sawari", Color(0xff1ebbd8), () {
+    //   _chamarUber();
+    // });
+
+    // setState(() {
+    //   _dadosRequest = {};
+    // });
   }
 
   _exibirHighlight(Position local, String icone, String infoWindow) async {
