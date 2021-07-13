@@ -181,7 +181,9 @@ class _DriveState extends State<Drive> {
 
   _statusAguardando() {
     _alterarBotaoPrincipal("Accept travel", Color(0xff1ebbd8), () {
-      _aceitarDrive();
+      setState(() {
+        _aceitarDrive();
+      });
     });
 
     double latitudeDestination = _dadosRequest["passenger"]["latitude"];

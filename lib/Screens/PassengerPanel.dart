@@ -594,6 +594,9 @@ class _PanelPassengerState extends State<PanelPassenger> {
 
     //_recuperaUltimaLocalizacaoConhecida();
     _adicionarListenerLocalizacao();
+
+    // solves the problem?
+    _recuperaUltimaLocalizacaoConhecida();
   }
 
   @override
@@ -622,7 +625,7 @@ class _PanelPassengerState extends State<PanelPassenger> {
               mapType: MapType.normal,
               initialCameraPosition: _posicaoCamera,
               onMapCreated: _onMapCreated,
-              //myLocationEnabled: true,
+              // myLocationEnabled: true,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               markers: _marcadores,
